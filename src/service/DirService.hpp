@@ -19,21 +19,21 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_DIRSERVICE_HPP
-#define LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_DIRSERVICE_HPP
+#define LINKERFS_WARP_GEN_OATPP_DIRSERVICE_HPP
 
-#include "dto/DirDto.hpp"
 #include "dto/ResponseDto.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "oatpp/web/protocol/http/Http.hpp"
+#include "dto/response/ListDirResp.hpp"
+#include <oatpp/core/macro/component.hpp>
+#include <oatpp/web/protocol/http/Http.hpp>
 
 class DirService {
 
 public:
-    static oatpp::Object<ResponseDto<DirRespDto>> listDir(const oatpp::String &dirPath);
+    static oatpp::Object<ResponseDto<ListDirResp>> listDir(const oatpp::String &dirPath);
 
 private:
     typedef oatpp::web::protocol::http::Status Status;
 };
 
-#endif//LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_DIRSERVICE_HPP

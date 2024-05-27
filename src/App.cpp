@@ -23,9 +23,9 @@
 #include "SwaggerComponent.hpp"
 #include "controller/DirController.hpp"
 #include "controller/WebuiController.hpp"
-#include "oatpp-swagger/Controller.hpp"
-#include "oatpp/network/Server.hpp"
 #include <QCommandLineParser>
+#include <oatpp-swagger/Controller.hpp>
+#include <oatpp/network/Server.hpp>
 
 void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<uint16_t> &port) {
 

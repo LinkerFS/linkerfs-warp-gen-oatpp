@@ -19,35 +19,23 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_RESPONSEDTO_HPP
-#define LINKERFS_WARP_GEN_OATPP_RESPONSEDTO_HPP
-
+#ifndef LINKERFS_WARP_GEN_OATPP_LISTDIRREQ_HPP
+#define LINKERFS_WARP_GEN_OATPP_LISTDIRREQ_HPP
 
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-template<class T>
-class ResponseDto : public oatpp::DTO {
-    DTO_INIT(ResponseDto, DTO)
+class ListDirReq : public oatpp::DTO {
+    DTO_INIT(ListDirReq, DTO)
 
-    DTO_FIELD(Int32, code);
-    DTO_FIELD_INFO(code) {
-        info->description = "Response code";
-    }
-
-    DTO_FIELD(Object<T>, data);
-    DTO_FIELD_INFO(data) {
-        info->description = "Response data";
-    }
-
-    DTO_FIELD(String, message);
-    DTO_FIELD_INFO(message) {
-        info->description = "Response message";
+    DTO_FIELD(String, dirPath);
+    DTO_FIELD_INFO(dirPath) {
+        info->description = "Dir absolute path";
     }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_RESPONSEDTO_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRREQ_HPP

@@ -19,13 +19,13 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_ERRORHANDLER_HPP
-#define LINKERFS_WARP_GEN_ERRORHANDLER_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_ERRORHANDLER_HPP
+#define LINKERFS_WARP_GEN_OATPP_ERRORHANDLER_HPP
 
 #include "dto/ResponseDto.hpp"
 
-#include "oatpp/web/protocol/http/outgoing/ResponseFactory.hpp"
-#include "oatpp/web/server/handler/ErrorHandler.hpp"
+#include <oatpp/web/protocol/http/outgoing/ResponseFactory.hpp>
+#include <oatpp/web/server/handler/ErrorHandler.hpp>
 
 class ErrorHandler : public oatpp::web::server::handler::ErrorHandler {
 private:
@@ -37,10 +37,10 @@ private:
     std::shared_ptr<oatpp::data::mapping::ObjectMapper> m_objectMapper;
 
 public:
-    ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper> &objectMapper);
+    explicit ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper> &objectMapper);
     std::shared_ptr<OutgoingResponse>
     handleError(const Status &status, const oatpp::String &message, const Headers &headers) override;
 };
 
 
-#endif//LINKERFS_WARP_GEN_ERRORHANDLER_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_ERRORHANDLER_HPP

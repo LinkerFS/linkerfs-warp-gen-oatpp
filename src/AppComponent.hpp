@@ -19,19 +19,16 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_APPCOMPONENT_HPP
-#define LINKERFS_WARP_GEN_APPCOMPONENT_HPP
-
-
-#include <utility>
+#ifndef LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP
+#define LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP
 
 #include "ErrorHandler.hpp"
 #include "SwaggerComponent.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "oatpp/network/tcp/server/ConnectionProvider.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/web/server/HttpConnectionHandler.hpp"
-#include "oatpp/web/server/HttpRouter.hpp"
+#include <oatpp/core/macro/component.hpp>
+#include <oatpp/network/tcp/server/ConnectionProvider.hpp>
+#include <oatpp/parser/json/mapping/ObjectMapper.hpp>
+#include <oatpp/web/server/HttpConnectionHandler.hpp>
+#include <oatpp/web/server/HttpRouter.hpp>
 
 class AppComponent {
 public:
@@ -61,4 +58,4 @@ public:
     }());
 };
 
-#endif//LINKERFS_WARP_GEN_APPCOMPONENT_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP

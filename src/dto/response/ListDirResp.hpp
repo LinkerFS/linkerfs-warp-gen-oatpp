@@ -19,21 +19,19 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_DIRDTO_HPP
-#define LINKERFS_WARP_GEN_DIRDTO_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
+#define LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
 
-
-#include "oatpp/core/macro/codegen.hpp"
+#include "dto/common/DirInfo.hpp"
+#include "dto/common/FileInfo.hpp"
+#include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/Types.hpp>
-
-#include "DirInfo.hpp"
-#include "FileInfo.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class DirRespDto : public oatpp::DTO {
+class ListDirResp : public oatpp::DTO {
 
-    DTO_INIT(DirRespDto, DTO)
+    DTO_INIT(ListDirResp, DTO)
 
     DTO_FIELD(String, dirPath);
     DTO_FIELD_INFO(dirPath) {
@@ -52,18 +50,5 @@ class DirRespDto : public oatpp::DTO {
 };
 
 #include OATPP_CODEGEN_END(DTO)
-#include OATPP_CODEGEN_BEGIN(DTO)
 
-class DirReqDto : public oatpp::DTO {
-
-    DTO_INIT(DirReqDto, DTO)
-
-    DTO_FIELD(String, dirPath);
-    DTO_FIELD_INFO(dirPath) {
-        info->description = "Dir absolute path";
-    }
-};
-
-#include OATPP_CODEGEN_END(DTO)
-
-#endif//LINKERFS_WARP_GEN_DIRDTO_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP

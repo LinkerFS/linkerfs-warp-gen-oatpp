@@ -19,12 +19,12 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_SWAGGERCOMPONENT_HPP
-#define LINKERFS_WARP_GEN_SWAGGERCOMPONENT_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP
+#define LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP
 
-#include "oatpp-swagger/Model.hpp"
-#include "oatpp-swagger/Resources.hpp"
-#include "oatpp/core/macro/component.hpp"
+#include <oatpp-swagger/Model.hpp>
+#include <oatpp-swagger/Resources.hpp>
+#include <oatpp/core/macro/component.hpp>
 
 class SwaggerComponent {
 public:
@@ -34,7 +34,7 @@ public:
 
         builder
                 .setTitle("Swagger")
-                .setDescription("linkerfs_warp_gen project with swagger docs")
+                .setDescription("LINKERFS_WARP_GEN_OATPP project with swagger docs")
                 .setVersion("1.0")
                 .setLicenseName("GNU Affero General Public Version 3")
                 .setLicenseUrl("https://www.gnu.org/licenses/");
@@ -47,4 +47,4 @@ public:
     }());
 };
 
-#endif//LINKERFS_WARP_GEN_SWAGGERCOMPONENT_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP

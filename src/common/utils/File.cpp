@@ -22,8 +22,8 @@
 #include "File.hpp"
 
 namespace Utils::File {
-    oatpp::Object<DirRespDto> listDir(QDir &&dir, QDir::Filter &&filter) {
-        auto respData = DirRespDto::createShared();
+    oatpp::Object<ListDirResp> listDir(QDir &&dir, QDir::Filter &&filter) {
+        auto respData = ListDirResp::createShared();
         respData->dirPath = dir.path().toStdString();
         auto filterFlag =
                 QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs |
@@ -45,8 +45,8 @@ namespace Utils::File {
         return respData;
     }
 
-    oatpp::Object<DirRespDto> listDrivers() {
-        auto respData = DirRespDto::createShared();
+    oatpp::Object<ListDirResp> listDrivers() {
+        auto respData = ListDirResp::createShared();
         auto drivers = QDir::drives();
         respData->dirPath = "";
         for (const auto &driver: drivers) {
