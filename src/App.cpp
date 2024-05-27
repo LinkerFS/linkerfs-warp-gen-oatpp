@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     QCommandLineParser optParser;
     //todo load config from cli
     auto address = std::make_shared<oatpp::String>("0.0.0.0");
-    auto port = std::make_shared<uint16_t>(8000);
+    auto port = std::make_shared<uint16_t>(8080);
     oatpp::base::Environment::init();
     run(address, port);
     oatpp::base::Environment::destroy();
