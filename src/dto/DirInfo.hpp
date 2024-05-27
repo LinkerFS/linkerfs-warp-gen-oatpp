@@ -19,20 +19,24 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_DIRSERVICE_HPP
-#define LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_DIRINFO_HPP
+#define LINKERFS_WARP_GEN_OATPP_DIRINFO_HPP
 
-#include "oatpp/web/protocol/http/Http.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "dto/DirDto.hpp"
-#include "dto/ResponseDto.hpp"
+#include OATPP_CODEGEN_BEGIN(DTO)
 
-class DirService {
+class DirInfo : public oatpp::DTO {
 
-public:
-    static oatpp::Object<ResponseDto<DirRespDto>> listDir(const oatpp::String &dirPath);
-private:
-    typedef oatpp::web::protocol::http::Status Status;
+    DTO_INIT(DirInfo, DTO)
+
+    DTO_FIELD(String, name);
+    DTO_FIELD_INFO(name) { info->description = "Dir name"; }
+
+    DTO_FIELD(Boolean, isEmpty);
+    DTO_FIELD_INFO(isEmpty) {
+        info->description = "Whether dir has any item(regular file and directory)";
+    }
 };
 
-#endif //LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#include OATPP_CODEGEN_END(DTO)
+
+#endif// LINKERFS_WARP_GEN_OATPP_DIRINFO_HPP

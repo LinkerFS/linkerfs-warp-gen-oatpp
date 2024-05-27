@@ -20,20 +20,20 @@
  */
 
 #include "DirService.hpp"
+#include "common/utils/File.hpp"
 #include <QDir>
 
 oatpp::Object<ResponseDto<DirRespDto>> DirService::listDir(const oatpp::String &dirPath) {
 
+    OATPP_ASSERT_HTTP(dirPath, Status::CODE_400, "dirPath filed not found")
     QDir dir(dirPath->c_str());
-    OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_404, "Dir not found")
-    auto dirRespDto = ResponseDto<DirRespDto>::createShared();
-    dirRespDto->code=Status::CODE_200.code;
-    dirRespDto->message="Success";
-    dirRespDto->data=DirRespDto::createShared();
-    dirRespDto->data->files={};
-    dirRespDto->data->dirPath = dirPath;
-    for (auto const &file: dir.entryList()) {
-        dirRespDto->data->files->emplace_back(file.toStdString());
-    }
-    return dirRespDto;
+    auto resp = ResponseDto<DirRespDto>::createShared();
+    resp->code = Status::CODE_200.code;
+    resp->message = "Success";
+
+    if (dirPath == "")
+        resp->data = Utils::File::listDrivers();
+    else
+        resp->data = Utils::File::listDir(std::move(dir));
+    return resp;
 }

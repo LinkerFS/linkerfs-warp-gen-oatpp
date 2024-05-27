@@ -19,20 +19,15 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_DIRSERVICE_HPP
-#define LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_FILE_HPP
+#define LINKERFS_WARP_GEN_OATPP_FILE_HPP
 
-#include "oatpp/web/protocol/http/Http.hpp"
-#include "oatpp/core/macro/component.hpp"
 #include "dto/DirDto.hpp"
-#include "dto/ResponseDto.hpp"
+#include <QDir>
 
-class DirService {
+namespace Utils::File {
+    oatpp::Object<DirRespDto> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
+    oatpp::Object<DirRespDto> listDrivers();
+}// namespace Utils::File
 
-public:
-    static oatpp::Object<ResponseDto<DirRespDto>> listDir(const oatpp::String &dirPath);
-private:
-    typedef oatpp::web::protocol::http::Status Status;
-};
-
-#endif //LINKERFS_WARP_GEN_DIRSERVICE_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_FILE_HPP

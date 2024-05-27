@@ -24,7 +24,10 @@
 
 
 #include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
+#include <oatpp/core/Types.hpp>
+
+#include "DirInfo.hpp"
+#include "FileInfo.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -32,17 +35,20 @@ class DirRespDto : public oatpp::DTO {
 
     DTO_INIT(DirRespDto, DTO)
 
+    DTO_FIELD(String, dirPath);
     DTO_FIELD_INFO(dirPath) {
         info->description = "Dir absolute path";
     }
 
-    DTO_FIELD(String, dirPath);
-
-    DTO_FIELD_INFO(files) {
+    DTO_FIELD(Vector<Object<FileInfo>>, fileList)={};
+    DTO_FIELD_INFO(fileList) {
         info->description = "Files in dir";
     }
 
-    DTO_FIELD(Vector < String >, files);
+    DTO_FIELD(Vector<Object<DirInfo>>, dirList)={};
+    DTO_FIELD_INFO(dirList) {
+        info->description = "Directories in dir";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
@@ -53,15 +59,12 @@ class DirReqDto : public oatpp::DTO {
     DTO_INIT(DirReqDto, DTO)
 
 
+    DTO_FIELD(String, dirPath);
     DTO_FIELD_INFO(dirPath) {
         info->description = "Dir absolute path";
     }
-
-    DTO_FIELD(String, dirPath
-    );
-
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_DIRDTO_HPP
+#endif//LINKERFS_WARP_GEN_DIRDTO_HPP

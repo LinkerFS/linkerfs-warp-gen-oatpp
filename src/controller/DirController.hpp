@@ -42,16 +42,14 @@ public:
 
     ENDPOINT_INFO(listDir) {
         info->summary = "List dir";
-        info->addConsumes < Object < DirReqDto >> ("application/json");
+        info->addConsumes<Object<DirReqDto>>("application/json");
         info->addResponse<Object<ResponseDto<DirRespDto>>>(Status::CODE_200, "application/json");
         info->addResponse<Object<ResponseDto<EmptyDto>>>(Status::CODE_404, "application/json");
         info->addResponse<Object<ResponseDto<EmptyDto>>>(Status::CODE_500, "application/json");
-
-        info->pathParams["userId"].description = "User Identifier";
     }
 
-    ENDPOINT("POST", "api/dir/list", listDir,
-             BODY_DTO(Object < DirReqDto > , dirReqDto)) {
+    ENDPOINT("POST", "api/file/listDir", listDir,
+        BODY_DTO(Object<DirReqDto>,dirReqDto)) {
         return createDtoResponse(Status::CODE_200, DirService::listDir(dirReqDto->dirPath));
     }
 
