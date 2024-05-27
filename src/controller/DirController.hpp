@@ -22,11 +22,11 @@
 #ifndef LINKERFS_WARP_GEN_DIRCONTROLLER_HPP
 #define LINKERFS_WARP_GEN_DIRCONTROLLER_HPP
 
-#include "oatpp/web/server/api/ApiController.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/core/macro/codegen.hpp"
 #include "dto/DirDto.hpp"
 #include "dto/EmptyDto.hpp"
+#include "oatpp/core/macro/codegen.hpp"
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "oatpp/web/server/api/ApiController.hpp"
 #include "service/DirService.hpp"
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
@@ -34,6 +34,7 @@
 
 class DirController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
+
 public:
     static std::shared_ptr<DirController> createShared(
             OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
@@ -49,7 +50,7 @@ public:
     }
 
     ENDPOINT("POST", "api/file/listDir", listDir,
-        BODY_DTO(Object<DirReqDto>,dirReqDto)) {
+             BODY_DTO(Object<DirReqDto>, dirReqDto)) {
         return createDtoResponse(Status::CODE_200, DirService::listDir(dirReqDto->dirPath));
     }
 
@@ -59,4 +60,4 @@ private:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif //LINKERFS_WARP_GEN_DIRCONTROLLER_HPP
+#endif//LINKERFS_WARP_GEN_DIRCONTROLLER_HPP

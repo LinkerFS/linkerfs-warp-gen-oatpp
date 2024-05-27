@@ -23,38 +23,32 @@
 #define LINKERFS_WARP_GEN_RESPONSEDTO_HPP
 
 
-
-#include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
+#include "oatpp/core/macro/codegen.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
 template<class T>
 class ResponseDto : public oatpp::DTO {
 
-    DTO_INIT(ResponseDto, DTO
-    )
+    DTO_INIT(ResponseDto, DTO)
 
+    DTO_FIELD(Int32, code);
     DTO_FIELD_INFO(code) {
         info->description = "Response code";
     }
 
-    DTO_FIELD(Int32, code);
-
+    DTO_FIELD(Object<T>, data);
     DTO_FIELD_INFO(data) {
         info->description = "Response data";
     }
 
-    DTO_FIELD(Object < T >, data);
-
+    DTO_FIELD(String, message);
     DTO_FIELD_INFO(message) {
         info->description = "Response message";
     }
-
-    DTO_FIELD(String, message);
-
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_RESPONSEDTO_HPP
+#endif//LINKERFS_WARP_GEN_RESPONSEDTO_HPP

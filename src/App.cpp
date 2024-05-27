@@ -19,12 +19,12 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "oatpp-swagger/Controller.hpp"
-#include "oatpp/network/Server.hpp"
 #include "AppComponent.hpp"
 #include "SwaggerComponent.hpp"
-#include "controller/WebuiController.hpp"
 #include "controller/DirController.hpp"
+#include "controller/WebuiController.hpp"
+#include "oatpp-swagger/Controller.hpp"
+#include "oatpp/network/Server.hpp"
 #include <QCommandLineParser>
 
 void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<uint16_t> &port) {

@@ -25,33 +25,32 @@
 
 #include <utility>
 
-#include "oatpp/web/server/HttpConnectionHandler.hpp"
-#include "oatpp/web/server/HttpRouter.hpp"
+#include "ErrorHandler.hpp"
+#include "SwaggerComponent.hpp"
+#include "oatpp/core/macro/component.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
-#include "oatpp/core/macro/component.hpp"
-#include "SwaggerComponent.hpp"
-#include "ErrorHandler.hpp"
+#include "oatpp/web/server/HttpConnectionHandler.hpp"
+#include "oatpp/web/server/HttpRouter.hpp"
 
 class AppComponent {
 public:
-
     SwaggerComponent swaggerComponent;
 
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
+    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)
+    ([] {
         auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
         objectMapper->getDeserializer()->getConfig()->allowUnknownFields = false;
         return objectMapper;
     }());
 
-
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
+    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)
+    ([] {
         return oatpp::web::server::HttpRouter::createShared();
     }());
 
-
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
-
+    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)
+    ([] {
         OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
         OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>,
                         objectMapper);
@@ -59,10 +58,7 @@ public:
         auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
         connectionHandler->setErrorHandler(std::make_shared<ErrorHandler>(objectMapper));
         return connectionHandler;
-
     }());
-
-
 };
 
-#endif //LINKERFS_WARP_GEN_APPCOMPONENT_HPP
+#endif//LINKERFS_WARP_GEN_APPCOMPONENT_HPP

@@ -22,26 +22,26 @@
 #ifndef LINKERFS_WARP_GEN_WEBUICONTROLLER_HPP
 #define LINKERFS_WARP_GEN_WEBUICONTROLLER_HPP
 
-#include <fstream>
-#include <sstream>
-#include "oatpp/web/server/api/ApiController.hpp"
-#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "oatpp/web/server/api/ApiController.hpp"
+#include <fstream>
+#include <sstream>
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
-static const oatpp::UnorderedMap<oatpp::String, oatpp::String> contentMap = {\
+static const oatpp::UnorderedMap<oatpp::String, oatpp::String> contentMap = {
         {"js", "text/javascript"},
         {"mjs", "text/javascript"},
         {"html", "text/html"},
         {"htm", "text/html"},
         {"css", "text/css"},
-        {"svg", "image/svg+xml"}
-};
+        {"svg", "image/svg+xml"}};
 
 class WebuiController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
+
 public:
     static std::shared_ptr<WebuiController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
         return std::make_shared<WebuiController>(objectMapper);
@@ -80,4 +80,4 @@ public:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif //LINKERFS_WARP_GEN_WEBUICONTROLLER_HPP
+#endif//LINKERFS_WARP_GEN_WEBUICONTROLLER_HPP

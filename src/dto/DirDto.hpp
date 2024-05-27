@@ -40,12 +40,12 @@ class DirRespDto : public oatpp::DTO {
         info->description = "Dir absolute path";
     }
 
-    DTO_FIELD(Vector<Object<FileInfo>>, fileList)={};
+    DTO_FIELD(Vector<Object<FileInfo>>, fileList) = {};
     DTO_FIELD_INFO(fileList) {
         info->description = "Files in dir";
     }
 
-    DTO_FIELD(Vector<Object<DirInfo>>, dirList)={};
+    DTO_FIELD(Vector<Object<DirInfo>>, dirList) = {};
     DTO_FIELD_INFO(dirList) {
         info->description = "Directories in dir";
     }
@@ -57,7 +57,6 @@ class DirRespDto : public oatpp::DTO {
 class DirReqDto : public oatpp::DTO {
 
     DTO_INIT(DirReqDto, DTO)
-
 
     DTO_FIELD(String, dirPath);
     DTO_FIELD_INFO(dirPath) {

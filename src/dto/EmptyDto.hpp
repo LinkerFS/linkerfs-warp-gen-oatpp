@@ -22,8 +22,8 @@
 #ifndef LINKERFS_WARP_GEN_EMPTYDTO_HPP
 #define LINKERFS_WARP_GEN_EMPTYDTO_HPP
 
-#include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/Types.hpp"
+#include "oatpp/core/macro/codegen.hpp"
 #include OATPP_CODEGEN_BEGIN(DTO)
 
 class EmptyDto : public oatpp::DTO {
@@ -33,4 +33,4 @@ class EmptyDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_EMPTYDTO_HPP
+#endif//LINKERFS_WARP_GEN_EMPTYDTO_HPP

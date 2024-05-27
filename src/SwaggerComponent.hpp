@@ -28,8 +28,8 @@
 
 class SwaggerComponent {
 public:
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::DocumentInfo>, swaggerDocumentInfo)([] {
-
+    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::DocumentInfo>, swaggerDocumentInfo)
+    ([] {
         oatpp::swagger::DocumentInfo::Builder builder;
 
         builder
@@ -40,11 +40,11 @@ public:
                 .setLicenseUrl("https://www.gnu.org/licenses/");
 
         return builder.build();
-
     }());
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::Resources>, swaggerResources)([] {
+    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::Resources>, swaggerResources)
+    ([] {
         return oatpp::swagger::Resources::loadResources(OATPP_SWAGGER_RES_PATH);
     }());
 };
 
-#endif //LINKERFS_WARP_GEN_SWAGGERCOMPONENT_HPP
+#endif//LINKERFS_WARP_GEN_SWAGGERCOMPONENT_HPP
