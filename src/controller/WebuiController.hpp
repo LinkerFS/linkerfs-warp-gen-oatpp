@@ -23,6 +23,7 @@
 #define LINKERFS_WARP_GEN_WEBUICONTROLLER_HPP
 
 #include <fstream>
+#include <sstream>
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/core/macro/codegen.hpp"
