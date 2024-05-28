@@ -1,7 +1,7 @@
 # find liblinkerfs
 find_library(LIB_linkerfs NAMES linkerfs PATHS ${CMAKE_CURRENT_SOURCE_DIR}/liblinkerfs/lib)
 if (LIB_linkerfs)
-    message(STATUS "-- Found Library linkerfs: ${LIB_linkerfs}")
+    message(STATUS "Found Library linkerfs: ${LIB_linkerfs}")
     add_library(liblinkerfs INTERFACE)
     set_target_properties(liblinkerfs PROPERTIES IMPORTED_LOCATION ${LIB_linkerfs})
     target_include_directories(liblinkerfs INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/liblinkerfs/include)
