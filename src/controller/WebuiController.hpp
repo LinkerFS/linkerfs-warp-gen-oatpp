@@ -31,7 +31,7 @@
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
-static const oatpp::UnorderedMap<oatpp::String, oatpp::String> contentMap = {
+static const std::unordered_map<std::string, std::string> contentMap = {
         {"js", "text/javascript"},
         {"mjs", "text/javascript"},
         {"html", "text/html"},
@@ -56,8 +56,8 @@ public:
             buf << ifs.rdbuf();
             auto pos = filepath->find_last_of(".") + 1;
             oatpp::String suffix = filepath->substr(pos, filepath->size() - pos);
-            auto ret = contentMap->find(suffix);
-            contentType = ret == contentMap->end() ? "" : ret->second;
+            auto ret = contentMap.find(suffix);
+            contentType = ret == contentMap.end() ? "" : ret->second;
 
         } else {
             ifs.open("./dist/index.html", std::ios::in);
