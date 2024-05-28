@@ -1,7 +1,3 @@
-# Qt
-find_package(QT NAMES QT5 QT6 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
-
 # oat++
 find_package(oatpp REQUIRED)
 find_package(oatpp-swagger REQUIRED)
@@ -17,7 +13,6 @@ set(SOURCES
 
 add_executable(linkerfs_warp_gen_oatpp ${SOURCES})
 target_link_libraries(linkerfs_warp_gen_oatpp PRIVATE
-        Qt${QT_VERSION_MAJOR}::Core
         oatpp::oatpp
         oatpp::oatpp-swagger
         liblinkerfs

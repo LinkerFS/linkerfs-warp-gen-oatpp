@@ -23,7 +23,6 @@
 #include "SwaggerComponent.hpp"
 #include "controller/DirController.hpp"
 #include "controller/WebuiController.hpp"
-#include <QCommandLineParser>
 #include <oatpp-swagger/Controller.hpp>
 #include <oatpp/network/Server.hpp>
 
@@ -48,7 +47,6 @@ void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<ui
 
 int main(int argc, char *argv[]) {
 
-    QCommandLineParser optParser;
     //todo load config from cli
     auto address = std::make_shared<oatpp::String>("0.0.0.0");
     auto port = std::make_shared<uint16_t>(8080);

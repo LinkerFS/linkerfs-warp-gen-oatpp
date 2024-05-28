@@ -24,10 +24,12 @@
 
 
 #include "dto/response/ListDirResp.hpp"
-#include <QDir>
+#include <filesystem>
 
 namespace Utils::File {
-    oatpp::Object<ListDirResp> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
+    namespace fs = std::filesystem;
+    bool checkDirEmpty(fs::directory_entry &&dir);
+    oatpp::Object<ListDirResp> listDir(fs::directory_entry &&dir);
     oatpp::Object<ListDirResp> listDrivers();
 }// namespace Utils::File
 

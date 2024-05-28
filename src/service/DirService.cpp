@@ -21,11 +21,10 @@
 
 #include "DirService.hpp"
 #include "common/utils/File.hpp"
-#include <QDir>
 
 oatpp::Object<ResponseDto<ListDirResp>> DirService::listDir(const oatpp::String &dirPath) {
     OATPP_ASSERT_HTTP(dirPath, Status::CODE_400, "dirPath filed not found")
-    QDir dir(dirPath->c_str());
+    auto dir = std::filesystem::directory_entry(dirPath->c_str());
     auto resp = ResponseDto<ListDirResp>::createShared();
     resp->code = Status::CODE_200.code;
     resp->message = "Success";
