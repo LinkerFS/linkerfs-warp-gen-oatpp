@@ -22,16 +22,16 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_DIRCONTROLLER_HPP
 #define LINKERFS_WARP_GEN_OATPP_DIRCONTROLLER_HPP
 
-#include "dto/EmptyDto.hpp"
-#include "dto/request/ListDirReq.hpp"
-#include "dto/response/ListDirResp.hpp"
+#include "dto/common/DocExampleDtos.hpp"
+#include "dto/request/ListDirReqDto.hpp"
+#include "dto/response/ListDirRespDto.hpp"
 #include "service/DirService.hpp"
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 
-#include OATPP_CODEGEN_BEGIN(ApiController)
 
+#include OATPP_CODEGEN_BEGIN(ApiController)
 
 class DirController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
@@ -44,14 +44,14 @@ public:
 
     ENDPOINT_INFO(listDir) {
         info->summary = "List dir";
-        info->addConsumes<Object<ListDirReq>>("application/json");
-        info->addResponse<Object<ResponseDto<ListDirResp>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<ResponseDto<EmptyDto>>>(Status::CODE_404, "application/json");
-        info->addResponse<Object<ResponseDto<EmptyDto>>>(Status::CODE_500, "application/json");
+        info->addConsumes<Object<ListDirReqDto>>("application/json");
+        info->addResponse<Object<RespWithDataExample<ListDirRespDto>>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/file/listDir", listDir,
-             BODY_DTO(Object<ListDirReq>, dirReqDto)) {
+             BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
         return createDtoResponse(Status::CODE_200, DirService::listDir(dirReqDto->dirPath));
     }
 

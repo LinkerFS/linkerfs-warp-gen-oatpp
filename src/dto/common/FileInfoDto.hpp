@@ -19,36 +19,24 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
-#define LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP
+#define LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP
 
-#include "dto/common/DirInfo.hpp"
-#include "dto/common/FileInfo.hpp"
-#include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/Types.hpp>
+#include <oatpp/core/macro/codegen.hpp>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class ListDirResp : public oatpp::DTO {
+class FileInfoDto : public oatpp::DTO {
+    DTO_INIT(FileInfoDto, DTO)
 
-    DTO_INIT(ListDirResp, DTO)
+    DTO_FIELD(String, name);
+    DTO_FIELD_INFO(name) { info->description = "File name"; }
 
-    DTO_FIELD(String, dirPath);
-    DTO_FIELD_INFO(dirPath) {
-        info->description = "Dir absolute path";
-    }
-
-    DTO_FIELD(Vector<Object<FileInfo>>, fileList) = {};
-    DTO_FIELD_INFO(fileList) {
-        info->description = "Files in dir";
-    }
-
-    DTO_FIELD(Vector<Object<DirInfo>>, dirList) = {};
-    DTO_FIELD_INFO(dirList) {
-        info->description = "Directories in dir";
-    }
+    DTO_FIELD(Int64, size);
+    DTO_FIELD_INFO(size) { info->description = "size of file"; }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
+#endif// LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP

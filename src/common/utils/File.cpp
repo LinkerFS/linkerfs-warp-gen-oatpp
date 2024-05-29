@@ -22,8 +22,8 @@
 #include "File.hpp"
 
 namespace Utils::File {
-    oatpp::Object<ListDirResp> listDir(QDir &&dir, QDir::Filter &&filter) {
-        auto respData = ListDirResp::createShared();
+    oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter) {
+        auto respData = ListDirRespDto::createShared();
         respData->dirPath = dir.path().toStdString();
         auto filterFlag =
                 QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs |
@@ -31,12 +31,12 @@ namespace Utils::File {
         auto items = dir.entryInfoList(filterFlag);
         for (const auto &item: items) {
             if (item.isFile()) {
-                auto fileInfo = oatpp::Object<FileInfo>::createShared();
+                auto fileInfo = FileInfoDto::createShared();
                 fileInfo->name = item.fileName().toStdString();
                 fileInfo->size = item.size();
                 respData->fileList->emplace_back(std::move(fileInfo));
             } else if (item.isDir()) {
-                auto dirInfo = DirInfo::createShared();
+                auto dirInfo = DirInfoDto::createShared();
                 dirInfo->name = std::move(item.fileName().toStdString());
                 dirInfo->isEmpty = QDir(item.filePath()).isEmpty(filterFlag);
                 respData->dirList->emplace_back(dirInfo);
@@ -45,12 +45,12 @@ namespace Utils::File {
         return respData;
     }
 
-    oatpp::Object<ListDirResp> listDrivers() {
-        auto respData = ListDirResp::createShared();
+    oatpp::Object<ListDirRespDto> listDrivers() {
+        auto respData = ListDirRespDto::createShared();
         auto drivers = QDir::drives();
         respData->dirPath = "";
         for (const auto &driver: drivers) {
-            auto dirInfo = oatpp::Object<DirInfo>::createShared();
+            auto dirInfo = oatpp::Object<DirInfoDto>();
             dirInfo->name = driver.path().toStdString();
             dirInfo->isEmpty = QDir(driver.path()).isEmpty();
             respData->dirList->push_back(dirInfo);

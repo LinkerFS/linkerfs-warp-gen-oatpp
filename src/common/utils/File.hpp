@@ -23,12 +23,12 @@
 #define LINKERFS_WARP_GEN_OATPP_FILE_HPP
 
 
-#include "dto/response/ListDirResp.hpp"
+#include "dto/response/ListDirRespDto.hpp"
 #include <QDir>
 
 namespace Utils::File {
-    oatpp::Object<ListDirResp> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
-    oatpp::Object<ListDirResp> listDrivers();
+    oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
+    oatpp::Object<ListDirRespDto> listDrivers();
 }// namespace Utils::File
 
 #endif//LINKERFS_WARP_GEN_OATPP_FILE_HPP

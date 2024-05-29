@@ -23,16 +23,12 @@
 #include "common/utils/File.hpp"
 #include <QDir>
 
-oatpp::Object<ResponseDto<ListDirResp>> DirService::listDir(const oatpp::String &dirPath) {
-    OATPP_ASSERT_HTTP(dirPath, Status::CODE_400, "dirPath filed not found")
+oatpp::Object<ResponseDto> DirService::listDir(const oatpp::String &dirPath) {
+    oatpp::Object<ResponseDto> resp;
     QDir dir(dirPath->c_str());
-    auto resp = ResponseDto<ListDirResp>::createShared();
-    resp->code = Status::CODE_200.code;
-    resp->message = "Success";
-
     if (dirPath == "")
-        resp->data = Utils::File::listDrivers();
+        resp = ResponseDto::success(Utils::File::listDrivers());
     else
-        resp->data = Utils::File::listDir(std::move(dir));
+        resp = ResponseDto::success(Utils::File::listDir(std::move(dir)));
     return resp;
 }
