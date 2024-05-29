@@ -23,14 +23,14 @@
 #define LINKERFS_WARP_GEN_OATPP_FILE_HPP
 
 
-#include "dto/response/ListDirResp.hpp"
+#include "dto/response/ListDirRespDto.hpp"
 #include <filesystem>
 
 namespace Utils::File {
     namespace fs = std::filesystem;
     bool checkDirEmpty(fs::directory_entry &&dir);
-    oatpp::Object<ListDirResp> listDir(fs::directory_entry &&dir);
-    oatpp::Object<ListDirResp> listDrivers();
+    oatpp::Object<ListDirRespDto> listDir(fs::directory_entry &&dir);
+    oatpp::Object<ListDirRespDto> listDrivers();
 }// namespace Utils::File
 
 #endif//LINKERFS_WARP_GEN_OATPP_FILE_HPP

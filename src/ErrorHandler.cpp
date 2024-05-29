@@ -20,21 +20,16 @@
  */
 
 #include "ErrorHandler.hpp"
-#include "dto/EmptyDto.hpp"
-
+#include "dto/response/ResponseDto.hpp"
 ErrorHandler::ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper> &objectMapper)
     : m_objectMapper(objectMapper) {}
 
 std::shared_ptr<ErrorHandler::OutgoingResponse>
 ErrorHandler::handleError(const Status &status, const oatpp::String &message, const Headers &headers) {
 
-    auto error = ResponseDto<EmptyDto>::createShared();
-    error->data = nullptr;
-    error->code = status.code;
-    error->message = message;
-
-    auto response = ResponseFactory::createResponse(status, error, m_objectMapper);
-
+    auto msg = const_cast<oatpp::String &>(message);
+    auto error = ResponseDto::fail(status.code, std::move(msg));
+    auto response = ResponseFactory::createResponse(Status::CODE_200, error, m_objectMapper);
     for (const auto &pair: headers.getAll()) {
         response->putHeader(pair.first.toString(), pair.second.toString());
     }

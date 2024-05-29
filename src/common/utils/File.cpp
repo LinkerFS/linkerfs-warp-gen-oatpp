@@ -23,24 +23,22 @@
 #include <windows.h>
 #endif
 
-
 #include "File.hpp"
-
 
 namespace Utils::File {
 
-    oatpp::Object<ListDirResp> listDir(fs::directory_entry &&dir) {
-        auto respData = ListDirResp::createShared();
+    oatpp::Object<ListDirRespDto> listDir(fs::directory_entry &&dir) {
+        auto respData = ListDirRespDto::createShared();
         respData->dirPath = dir.path().string();
         auto iterator = fs::directory_iterator(std::move(dir));
         for (const auto &item: iterator) {
             if (item.is_regular_file()) {
-                auto fileInfo = oatpp::Object<FileInfo>::createShared();
+                auto fileInfo = FileInfoDto::createShared();
                 fileInfo->name = item.path().filename().string();
                 fileInfo->size = item.file_size();
                 respData->fileList->emplace_back(fileInfo);
             } else if (item.is_directory()) {
-                auto dirInfo = DirInfo::createShared();
+                auto dirInfo = DirInfoDto::createShared();
                 dirInfo->name = item.path().filename().string();
                 dirInfo->isEmpty = checkDirEmpty(std::move(dir));
                 respData->dirList->emplace_back(dirInfo);
@@ -49,8 +47,8 @@ namespace Utils::File {
         return respData;
     }
 
-    oatpp::Object<ListDirResp> listDrivers() {
-        auto respData = ListDirResp::createShared();
+    oatpp::Object<ListDirRespDto> listDrivers() {
+        auto respData = ListDirRespDto::createShared();
         respData->dirPath = "";
 #ifdef _WIN32
         WCHAR driveName[] = L"A:\\";
@@ -60,7 +58,7 @@ namespace Utils::File {
                 UINT type = GetDriveTypeW(driveName);
                 //exclude DRIVE_UNKNOWN DRIVE_NO_ROOT_DIR
                 if (type > 1 && type < 7) {
-                    auto dirInfo = oatpp::Object<DirInfo>::createShared();
+                    auto dirInfo = DirInfoDto::createShared();
                     auto wstring = std::wstring(driveName);
                     auto name = std::string(wstring.begin(), wstring.end());
                     dirInfo->isEmpty = checkDirEmpty(fs::directory_entry(name));

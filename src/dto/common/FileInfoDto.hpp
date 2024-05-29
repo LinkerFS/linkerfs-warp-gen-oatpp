@@ -19,16 +19,16 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_FILEINFO_HPP
-#define LINKERFS_WARP_GEN_OATPP_FILEINFO_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP
+#define LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP
 
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class FileInfo : public oatpp::DTO {
-    DTO_INIT(FileInfo, DTO)
+class FileInfoDto : public oatpp::DTO {
+    DTO_INIT(FileInfoDto, DTO)
 
     DTO_FIELD(String, name);
     DTO_FIELD_INFO(name) { info->description = "File name"; }
@@ -39,4 +39,4 @@ class FileInfo : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif// LINKERFS_WARP_GEN_OATPP_FILEINFO_HPP
+#endif// LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP

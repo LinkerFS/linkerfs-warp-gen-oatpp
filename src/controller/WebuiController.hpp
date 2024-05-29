@@ -29,6 +29,7 @@
 #include <oatpp/web/server/api/ApiController.hpp>
 #include <sstream>
 
+
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 static const std::unordered_map<std::string, std::string> contentMap = {

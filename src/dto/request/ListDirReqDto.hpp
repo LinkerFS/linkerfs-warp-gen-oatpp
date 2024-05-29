@@ -19,18 +19,23 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_EMPTYDTO_HPP
-#define LINKERFS_WARP_GEN_OATPP_EMPTYDTO_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_LISTDIRREQDTO_HPP
+#define LINKERFS_WARP_GEN_OATPP_LISTDIRREQDTO_HPP
 
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class EmptyDto : public oatpp::DTO {
-    DTO_INIT(EmptyDto, DTO)
+class ListDirReqDto : public oatpp::DTO {
+    DTO_INIT(ListDirReqDto, DTO)
+
+    DTO_FIELD(String, dirPath);
+    DTO_FIELD_INFO(dirPath) {
+        info->description = "Dir absolute path";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_EMPTYDTO_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRREQDTO_HPP

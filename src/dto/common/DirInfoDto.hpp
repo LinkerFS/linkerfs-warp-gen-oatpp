@@ -19,36 +19,26 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
-#define LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_DIRINFODTO_HPP
+#define LINKERFS_WARP_GEN_OATPP_DIRINFODTO_HPP
 
-#include "dto/common/DirInfo.hpp"
-#include "dto/common/FileInfo.hpp"
-#include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/Types.hpp>
+#include <oatpp/core/macro/codegen.hpp>
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class ListDirResp : public oatpp::DTO {
+class DirInfoDto : public oatpp::DTO {
+    DTO_INIT(DirInfoDto, DTO)
 
-    DTO_INIT(ListDirResp, DTO)
+    DTO_FIELD(String, name);
+    DTO_FIELD_INFO(name) { info->description = "Dir name"; }
 
-    DTO_FIELD(String, dirPath);
-    DTO_FIELD_INFO(dirPath) {
-        info->description = "Dir absolute path";
-    }
-
-    DTO_FIELD(List<Object<FileInfo>>, fileList) = {};
-    DTO_FIELD_INFO(fileList) {
-        info->description = "Files in dir";
-    }
-
-    DTO_FIELD(List<Object<DirInfo>>, dirList) = {};
-    DTO_FIELD_INFO(dirList) {
-        info->description = "Directories in dir";
+    DTO_FIELD(Boolean, isEmpty);
+    DTO_FIELD_INFO(isEmpty) {
+        info->description = "Whether dir has any item(regular file and directory)";
     }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRRESP_HPP
+#endif// LINKERFS_WARP_GEN_OATPP_DIRINFODTO_HPP

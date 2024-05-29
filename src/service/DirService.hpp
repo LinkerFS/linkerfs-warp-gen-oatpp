@@ -22,15 +22,15 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_DIRSERVICE_HPP
 #define LINKERFS_WARP_GEN_OATPP_DIRSERVICE_HPP
 
-#include "dto/ResponseDto.hpp"
-#include "dto/response/ListDirResp.hpp"
+#include "dto/response/ListDirRespDto.hpp"
+#include "dto/response/ResponseDto.hpp"
 #include <oatpp/core/macro/component.hpp>
 #include <oatpp/web/protocol/http/Http.hpp>
 
 class DirService {
 
 public:
-    static oatpp::Object<ResponseDto<ListDirResp>> listDir(const oatpp::String &dirPath);
+    static oatpp::Object<ResponseDto> listDir(const oatpp::String &dirPath);
 
 private:
     typedef oatpp::web::protocol::http::Status Status;
