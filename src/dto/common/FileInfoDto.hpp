@@ -33,7 +33,7 @@ class FileInfoDto : public oatpp::DTO {
     DTO_FIELD(String, name);
     DTO_FIELD_INFO(name) { info->description = "File name"; }
 
-    DTO_FIELD(Int64, size);
+    DTO_FIELD(String , size);
     DTO_FIELD_INFO(size) { info->description = "size of file"; }
 };
 
