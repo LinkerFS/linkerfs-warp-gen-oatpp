@@ -19,8 +19,8 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_DIRCONTROLLER_HPP
-#define LINKERFS_WARP_GEN_OATPP_DIRCONTROLLER_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
+#define LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
 
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/ListDirReqDto.hpp"
@@ -33,13 +33,13 @@
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
-class DirController : public oatpp::web::server::api::ApiController {
+class FileController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
 
 public:
-    static std::shared_ptr<DirController> createShared(
+    static std::shared_ptr<FileController> createShared(
             OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
-        return std::make_shared<DirController>(objectMapper);
+        return std::make_shared<FileController>(objectMapper);
     }
 
     ENDPOINT_INFO(listDir) {
@@ -61,4 +61,4 @@ private:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif//LINKERFS_WARP_GEN_OATPP_DIRCONTROLLER_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
