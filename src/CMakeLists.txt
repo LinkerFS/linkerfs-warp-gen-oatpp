@@ -12,7 +12,7 @@ set(SOURCES
         App.cpp
         ErrorHandler.cpp
         common/utils/File.cpp
-        service/DirService.cpp
+        service/FileService.cpp
 )
 
 add_executable(linkerfs_warp_gen_oatpp ${SOURCES})

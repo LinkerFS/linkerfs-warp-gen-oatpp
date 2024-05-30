@@ -19,11 +19,11 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "DirService.hpp"
+#include "FileService.hpp"
 #include "common/utils/File.hpp"
 #include <QCoreApplication>
 #include <QDir>
-oatpp::Object<ResponseDto> DirService::listDir(const oatpp::String &dirPath) {
+oatpp::Object<ResponseDto> FileService::listDir(const oatpp::String &dirPath) {
     oatpp::Object<ResponseDto> resp;
     QDir dir(dirPath->c_str());
     if (dirPath == "")

@@ -25,7 +25,7 @@
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/ListDirReqDto.hpp"
 #include "dto/response/ListDirRespDto.hpp"
-#include "service/DirService.hpp"
+#include "service/FileService.hpp"
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
@@ -52,11 +52,11 @@ public:
 
     ENDPOINT("POST", "api/file/listDir", listDir,
              BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
-        return createDtoResponse(Status::CODE_200, DirService::listDir(dirReqDto->dirPath));
+        return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
     }
 
 private:
-    DirService m_dirService;
+    FileService m_dirService;
 };
 
 #include OATPP_CODEGEN_END(ApiController)
