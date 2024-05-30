@@ -35,7 +35,7 @@ namespace Utils::File {
             if (item.is_regular_file()) {
                 auto fileInfo = FileInfoDto::createShared();
                 fileInfo->name = item.path().filename().string();
-                fileInfo->size = item.file_size();
+                fileInfo->size = std::to_string(item.file_size());
                 respData->fileList->emplace_back(fileInfo);
             } else if (item.is_directory()) {
                 auto dirInfo = DirInfoDto::createShared();
