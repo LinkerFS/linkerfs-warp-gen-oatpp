@@ -50,7 +50,7 @@ namespace Utils::File {
         auto drivers = QDir::drives();
         respData->dirPath = "";
         for (const auto &driver: drivers) {
-            auto dirInfo = oatpp::Object<DirInfoDto>();
+            auto dirInfo = DirInfoDto::createShared();
             dirInfo->name = driver.path().toStdString();
             dirInfo->isEmpty = QDir(driver.path()).isEmpty();
             respData->dirList->push_back(dirInfo);
