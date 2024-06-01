@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    FileService m_dirService;
+    FileService m_fileService;
 };
 
 #include OATPP_CODEGEN_END(ApiController)
