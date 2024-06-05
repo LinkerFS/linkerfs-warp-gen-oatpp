@@ -22,6 +22,7 @@
 #include "AppComponent.hpp"
 #include "SwaggerComponent.hpp"
 #include "controller/FileController.hpp"
+#include "controller/WarpController.hpp"
 #include "controller/WebuiController.hpp"
 #include <QCommandLineParser>
 #include <oatpp-swagger/Controller.hpp>
@@ -34,6 +35,7 @@ void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<ui
     oatpp::web::server::api::Endpoints docEndpoints;
 
     docEndpoints.append(router->addController(FileController::createShared())->getEndpoints());
+    docEndpoints.append(router->addController(WarpController::createShared())->getEndpoints());
     router->addController(oatpp::swagger::Controller::createShared(docEndpoints));
     router->addController(WebuiController::createShared());
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
