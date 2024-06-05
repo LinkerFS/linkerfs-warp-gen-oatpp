@@ -1,8 +1,16 @@
+if (BUILD_SHARED_LIBS)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".dll")
+    set(LIBRARY_TYPE SHARED)
+else ()
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
+    set(LIBRARY_TYPE STATIC)
+endif ()
+
 # find liblinkerfs
-find_library(LIB_linkerfs NAMES linkerfs PATHS ${CMAKE_CURRENT_SOURCE_DIR}/liblinkerfs/lib)
+find_library(LIB_linkerfs NAMES linkerfs PATHS ${CMAKE_CURRENT_SOURCE_DIR}/liblinkerfs/lib NO_CACHE)
 if (LIB_linkerfs)
     message(STATUS "Found Library linkerfs: ${LIB_linkerfs}")
-    add_library(liblinkerfs INTERFACE)
+    add_library(liblinkerfs UNKNOWN IMPORTED GLOBAL)
     set_target_properties(liblinkerfs PROPERTIES IMPORTED_LOCATION ${LIB_linkerfs})
     target_include_directories(liblinkerfs INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/liblinkerfs/include)
 else ()
