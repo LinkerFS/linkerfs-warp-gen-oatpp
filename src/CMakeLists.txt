@@ -19,7 +19,7 @@ set(SOURCES
 
 add_executable(linkerfs_warp_gen_oatpp ${SOURCES} ${HEADERS})
 target_link_libraries(linkerfs_warp_gen_oatpp PRIVATE
-        Qt${QT_VERSION_MAJOR}::Core
+        Qt6::Core
         oatpp::oatpp
         oatpp::oatpp-swagger
         liblinkerfs
