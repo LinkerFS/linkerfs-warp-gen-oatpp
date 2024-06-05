@@ -59,7 +59,7 @@ public:
     }
 
     static Object<ResponseDto> fail(const int &code, oatpp::String &&msg = "") {
-        auto response = wrapper(Status::CODE_500.code, nullptr, std::move(msg));
+        auto response = wrapper(code, nullptr, std::move(msg));
         return response;
     }
 
