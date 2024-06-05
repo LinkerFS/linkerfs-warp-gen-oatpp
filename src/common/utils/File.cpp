@@ -20,6 +20,7 @@
  */
 
 #include "File.hpp"
+#include <filesystem>
 
 namespace Utils::File {
     oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter) {
@@ -56,6 +57,25 @@ namespace Utils::File {
             respData->dirList->push_back(dirInfo);
         }
         return respData;
+    }
+
+    bool checkDirWritePermission(const QString &dirPath) {
+#ifdef __WIN32
+        QNtfsPermissionCheckGuard permissionGuard;
+#endif
+        QFileInfo fileInfo(dirPath);
+        return fileInfo.isWritable();
+    }
+
+    std::error_code makeHardLink(const std::string &srcPath, const std::string &dstPath) {
+        std::error_code errorCode;
+        std::filesystem::create_hard_link(srcPath, dstPath, errorCode);
+        return errorCode;
+    }
+
+    bool writeFile(const QString &filePath, const QByteArray &data) {
+        QFile file(filePath);
+        return file.open(QIODevice::WriteOnly | QIODevice::NewOnly) && file.write(data) == data.size();
     }
 
 }// namespace Utils::File

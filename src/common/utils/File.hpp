@@ -29,6 +29,9 @@
 namespace Utils::File {
     oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
     oatpp::Object<ListDirRespDto> listDrivers();
+    bool checkDirWritePermission(const QString &dirPath);
+    std::error_code makeHardLink(const std::string &srcPath, const std::string &dstPath);
+    bool writeFile(const QString &filePath, const QByteArray &data);
 }// namespace Utils::File
 
 #endif//LINKERFS_WARP_GEN_OATPP_FILE_HPP
