@@ -19,16 +19,15 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
-#define LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP
+#define LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP
 
-#include "AbstractService.hpp"
-#include "dto/response/ListDirRespDto.hpp"
 
-class FileService : public AbstractService {
+#include "dto/response/ResponseDto.hpp"
+#include <oatpp/web/protocol/http/Http.hpp>
 
-public:
-    static oatpp::Object<ResponseDto> listDir(const oatpp::String &dirPath);
+class AbstractService {
+protected:
+    typedef oatpp::web::protocol::http::Status Status;
 };
-
-#endif//LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP
