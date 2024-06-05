@@ -68,8 +68,8 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
             if (errorCode) {
                 OATPP_LOGW("WarpService", QString("Hardlink %1 create failed for %2. fallback now...")
                                                   .arg(warpFilePath, QString::fromLocal8Bit(errorCode.message().data()))
-                                                  .toStdString()
-                                                  .c_str())
+                                                  .toLocal8Bit()
+                                                  .data())
             } else {
                 resp->hardlinkFiles->emplace_back(config->fileName->data());
                 continue;
