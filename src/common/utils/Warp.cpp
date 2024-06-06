@@ -30,11 +30,11 @@ namespace Utils::Warp {
         QFileInfo file(target->filePath->data());
         if (!file.exists() && file.isFile())
             return false;
-        qint64 dataOffset = QString(target->dataOffset->data()).toUInt(&ok);
-        if (!ok)
+        qint64 dataOffset = QString(target->dataOffset->data()).toLongLong(&ok);
+        if (!ok || dataOffset < 0)
             return false;
-        qint64 dataSize = QString(target->dataSize->data()).toUInt(&ok);
-        if (!ok || dataSize == 0)
+        qint64 dataSize = QString(target->dataSize->data()).toLongLong(&ok);
+        if (!ok || dataSize <= 0)
             return false;
         targetForLib->file_path = target->filePath->data();
         targetForLib->offset_in_file = dataOffset;
