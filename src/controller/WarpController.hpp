@@ -50,7 +50,9 @@ public:
     }
 
     ENDPOINT("POST", "api/warp/create", createWarp, BODY_DTO(Object<CreateWarpReqDto>, createWarpReqDto)) {
-        OATPP_ASSERT_HTTP(!createWarpReqDto->savePath->empty(), Status::CODE_400, "save path is empty")
+        OATPP_ASSERT_HTTP(createWarpReqDto->savePath, Status::CODE_400, "Field savePath is empty")
+        OATPP_ASSERT_HTTP(!createWarpReqDto->savePath->empty(), Status::CODE_400, "Save path is empty")
+        OATPP_ASSERT_HTTP(createWarpReqDto->warpConfigs, Status::CODE_400, "Field warpConfig is empty")
         return createDtoResponse(Status::CODE_200, WarpService::createWarp(createWarpReqDto->savePath, createWarpReqDto->warpConfigs));
     }
 };

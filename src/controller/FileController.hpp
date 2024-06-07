@@ -52,6 +52,7 @@ public:
 
     ENDPOINT("POST", "api/file/listDir", listDir,
              BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
+        OATPP_ASSERT_HTTP(dirReqDto->dirPath, Status::CODE_400, "Field dirPath is Empty")
         return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
     }
 
