@@ -75,7 +75,12 @@ namespace Utils::File {
 
     bool writeFile(const QString &filePath, const QByteArray &data) {
         QFile file(filePath);
-        return file.open(QIODevice::WriteOnly | QIODevice::NewOnly) && file.write(data) == data.size();
+        if (!file.open(QIODevice::WriteOnly | QIODevice::NewOnly))
+            return false;
+        if (file.write(data) != data.size()) {
+            file.remove();
+            return false;
+        }
+        return true;
     }
-
 }// namespace Utils::File
