@@ -71,7 +71,7 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
                                                   .toLocal8Bit()
                                                   .data())
             } else {
-                resp->hardlinkFiles->emplace_back(config->fileName->data());
+                resp->hardlinkFiles->emplace_back(warpFilePath.toStdString());
                 continue;
             }
         }
