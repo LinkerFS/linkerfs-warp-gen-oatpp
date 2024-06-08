@@ -46,7 +46,7 @@ public:
         info->summary = "Create warp file";
         info->addConsumes<Object<CreateWarpReqDto>>("application/json");
         info->addResponse<Object<RespWithDataExample<CreateWarpRespDto>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<RespWithDataExample<CreateWarpRespDto>>>(Status::CODE_500, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/warp/create", createWarp, BODY_DTO(Object<CreateWarpReqDto>, createWarpReqDto)) {
