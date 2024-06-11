@@ -67,7 +67,7 @@ public:
         return contentType;
     }
 
-    ENDPOINT("GET", "/webui/*", index, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
+    ENDPOINT("GET", "/webui/*", webui, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
         auto filePath = request->getPathTail();
         OATPP_ASSERT_HTTP(filePath, Status::CODE_400, "Empty filename")
         std::stringstream buffer;
@@ -75,6 +75,18 @@ public:
         auto res = createResponse(Status::CODE_200, buffer.str());
         res->putHeader(Header::CONTENT_TYPE, type);
         return res;
+    }
+
+    ENDPOINT("GET", "/doc", swagger, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
+        auto resp = ResponseFactory::createResponse(Status::CODE_301, nullptr);
+        resp->putHeader("Location", "/swagger/ui");
+        return resp;
+    }
+
+    ENDPOINT("GET", "/", root, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
+        auto resp = ResponseFactory::createResponse(Status::CODE_301, nullptr);
+        resp->putHeader("Location", "/webui");
+        return resp;
     }
 };
 
