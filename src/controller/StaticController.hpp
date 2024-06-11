@@ -22,6 +22,9 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
 #define LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
 
+#include <QDir>
+#include <QFile>
+#include <QMimeDatabase>
 #include <fstream>
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/macro/component.hpp>
@@ -47,34 +50,30 @@ public:
         return std::make_shared<StaticController>(objectMapper);
     }
 
-    static oatpp::String loadFile(const oatpp::String &filepath, std::stringstream &buf) {
-        oatpp::String contentType = "text/html";
-        oatpp::String root("./dist/");
-        oatpp::String resPath = root + filepath;
-        std::ifstream ifs(resPath->c_str(), std::ios::in);
-        if (ifs) {
-            buf << ifs.rdbuf();
-            auto pos = filepath->find_last_of(".") + 1;
-            oatpp::String suffix = filepath->substr(pos, filepath->size() - pos);
-            auto ret = contentMap.find(suffix);
-            contentType = ret == contentMap.end() ? "" : ret->second;
-
-        } else {
-            ifs.open("./dist/index.html", std::ios::in);
-            buf << ifs.rdbuf();
+    static QByteArray loadFile(const QString &filePath) {
+        QByteArray data;
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly)) {
+            data = file.readAll();
+            file.close();
         }
-        ifs.close();
-        return contentType;
+        return data;
     }
 
     ENDPOINT("GET", "/webui/*", webui, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-        auto filePath = request->getPathTail();
-        OATPP_ASSERT_HTTP(filePath, Status::CODE_400, "Empty filename")
-        std::stringstream buffer;
-        oatpp::String type = loadFile(filePath, buffer);
-        auto res = createResponse(Status::CODE_200, buffer.str());
-        res->putHeader(Header::CONTENT_TYPE, type);
-        return res;
+        oatpp::String filePath = request->getPathTail();
+        QDir dir("./dist");
+        const char *fileName;
+        if (!filePath->empty() && dir.exists(filePath->data())) {
+            fileName = filePath->data();
+        } else {
+            fileName = "index.html";
+        }
+        QByteArray data = loadFile(dir.filePath(fileName));
+        QMimeType type = mimeDatabase.mimeTypeForFileNameAndData(fileName, data);
+        auto resp = ResponseFactory::createResponse(Status::CODE_200, data.data());
+        resp->putHeader(Header::CONTENT_TYPE, type.name().toStdString());
+        return resp;
     }
 
     ENDPOINT("GET", "/doc", swagger, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
@@ -88,6 +87,9 @@ public:
         resp->putHeader("Location", "/webui");
         return resp;
     }
+
+private:
+    QMimeDatabase mimeDatabase;
 };
 
 #include OATPP_CODEGEN_END(ApiController)
