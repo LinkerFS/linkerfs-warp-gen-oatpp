@@ -19,8 +19,8 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_WEBUICONTROLLER_HPP
-#define LINKERFS_WARP_GEN_OATPP_WEBUICONTROLLER_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
+#define LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
 
 #include <fstream>
 #include <oatpp/core/macro/codegen.hpp>
@@ -28,7 +28,6 @@
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 #include <sstream>
-
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
@@ -40,12 +39,12 @@ static const std::unordered_map<std::string, std::string> contentMap = {
         {"css", "text/css"},
         {"svg", "image/svg+xml"}};
 
-class WebuiController : public oatpp::web::server::api::ApiController {
+class StaticController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
 
 public:
-    static std::shared_ptr<WebuiController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
-        return std::make_shared<WebuiController>(objectMapper);
+    static std::shared_ptr<StaticController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
+        return std::make_shared<StaticController>(objectMapper);
     }
 
     static oatpp::String loadFile(const oatpp::String &filepath, std::stringstream &buf) {
@@ -81,4 +80,4 @@ public:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif//LINKERFS_WARP_GEN_OATPP_WEBUICONTROLLER_HPP
+#endif//LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
