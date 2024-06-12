@@ -26,6 +26,7 @@
 #include "dto/request/ListDirReqDto.hpp"
 #include "dto/response/ListDirRespDto.hpp"
 #include "service/FileService.hpp"
+#include <QCoreApplication>
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
@@ -52,7 +53,8 @@ public:
 
     ENDPOINT("POST", "api/file/listDir", listDir,
              BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
-        OATPP_ASSERT_HTTP(dirReqDto->dirPath, Status::CODE_400, "Field dirPath is Empty")
+        OATPP_ASSERT_HTTP(dirReqDto->dirPath, Status::CODE_400,
+                          QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
         return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
     }
 

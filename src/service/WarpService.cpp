@@ -23,13 +23,15 @@
 #include "common/utils/File.hpp"
 #include "common/utils/Warp.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
+#include <QCoreApplication>
 
 oatpp::Object<ResponseDto>
 WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs) {
     QDir dir(savePath->data());
-    OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_500, QString("%1 does not exist").arg(dir.path()).toStdString())
+    OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_500,
+                      QCoreApplication::tr("%1 does not exist").arg(dir.path()).toStdString())
     OATPP_ASSERT_HTTP(Utils::File::checkDirWritePermission(dir.path()), Status::CODE_500,
-                      QString("%1 is not writable").arg(dir.path()).toStdString())
+                      QCoreApplication::tr("%1 is not writable").arg(dir.path()).toStdString())
     auto resp = CreateWarpRespDto::createShared();
     auto warpConfigsForLib = std::vector<WARP_CONFIG>();
     warpConfigsForLib.reserve(warpConfigs->size());
@@ -40,11 +42,13 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
         auto configForLib = WARP_CONFIG();
         char *fileName = config->fileName->data();
         OATPP_ASSERT_HTTP(!dir.exists(fileName), Status::CODE_500,
-                          QString("File %1 already exists").arg(dir.filePath(fileName)).toStdString())
+                          QCoreApplication::tr("File %1 already exists").arg(dir.filePath(fileName)).toStdString())
         OATPP_ASSERT_HTTP(!config->warpTargets->empty(), Status::CODE_500,
-                          QString("Config %1 has no target").arg(fileName).toStdString())
+                          QCoreApplication::tr("Config %1 has no target").arg(fileName).toStdString())
         OATPP_ASSERT_HTTP(config->warpTargets->size() <= 0xffff, Status::CODE_500,
-                          QString("Number of target in config %1 is out of range").arg(fileName).toStdString())
+                          QCoreApplication::tr("Number of target in config %1 is out of range")
+                                  .arg(fileName)
+                                  .toStdString())
         configForLib.warp_count = config->warpTargets->size();
         std::shared_ptr<WARP_TARGET> targetsForLib(new WARP_TARGET[config->warpTargets->size()],
                                                    std::default_delete<WARP_TARGET[]>());
@@ -52,7 +56,9 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
         for (uint32_t i = 0; i < config->warpTargets->size(); ++i) {
             auto target = config->warpTargets[i];
             OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSize(target, targetsForLib.get() + i), Status::CODE_500,
-                              QString("Target %1 in config %2 is invalid").arg(QString::number(i + 1), fileName).toStdString())
+                              QCoreApplication::tr("Target %1 in config %2 is invalid")
+                                      .arg(QString::number(i + 1), fileName)
+                                      .toStdString())
         }
         warpConfigsForLib.emplace_back(configForLib);
         warpTargetsForLibPtr.emplace_back(std::move(targetsForLib));
@@ -66,10 +72,10 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
             std::error_code errorCode =
                     Utils::File::makeHardLink(configForLib.warp_targets->file_path, warpFilePath.toStdString());
             if (errorCode) {
-                OATPP_LOGW("WarpService", QString("Hardlink %1 create failed for %2. fallback now...")
-                                                  .arg(warpFilePath, QString::fromLocal8Bit(errorCode.message().data()))
-                                                  .toLocal8Bit()
-                                                  .data())
+                OATPP_LOGW("WarpService",
+                           QCoreApplication::tr("Hardlink %1 create failed for %2. fallback now...")
+                                   .arg(warpFilePath, QString::fromLocal8Bit(errorCode.message().data()))
+                                   .toLocal8Bit())
             } else {
                 resp->hardlinkFiles->emplace_back(warpFilePath.toStdString());
                 continue;

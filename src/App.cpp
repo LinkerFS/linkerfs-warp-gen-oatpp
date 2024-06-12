@@ -44,7 +44,9 @@ void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<ui
             {*address, *port, oatpp::network::Address::IP_4});
 
     oatpp::network::Server server(connectionProvider, connectionHandler);
-    OATPP_LOGD("Server", "Running on port %s...", connectionProvider->getProperty("port").toString()->c_str());
+    OATPP_LOGD("Server", QCoreApplication::tr("Running on port %1...")
+                                 .arg(connectionProvider->getProperty("port").toString()->c_str())
+                                 .toLocal8Bit())
     server.run();
 }
 

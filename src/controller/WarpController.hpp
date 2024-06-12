@@ -31,7 +31,6 @@
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 
-
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class WarpController : public oatpp::web::server::api::ApiController {
@@ -50,10 +49,14 @@ public:
     }
 
     ENDPOINT("POST", "api/warp/create", createWarp, BODY_DTO(Object<CreateWarpReqDto>, createWarpReqDto)) {
-        OATPP_ASSERT_HTTP(createWarpReqDto->savePath, Status::CODE_400, "Field savePath is empty")
-        OATPP_ASSERT_HTTP(!createWarpReqDto->savePath->empty(), Status::CODE_400, "Save path is empty")
-        OATPP_ASSERT_HTTP(createWarpReqDto->warpConfigs, Status::CODE_400, "Field warpConfig is empty")
-        return createDtoResponse(Status::CODE_200, WarpService::createWarp(createWarpReqDto->savePath, createWarpReqDto->warpConfigs));
+        OATPP_ASSERT_HTTP(createWarpReqDto->savePath, Status::CODE_400,
+                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(!createWarpReqDto->savePath->empty(), Status::CODE_400,
+                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(createWarpReqDto->warpConfigs, Status::CODE_400,
+                          QCoreApplication::tr("Field warpConfig can not be empty").toStdString())
+        return createDtoResponse(Status::CODE_200,
+                                 WarpService::createWarp(createWarpReqDto->savePath, createWarpReqDto->warpConfigs));
     }
 };
 
