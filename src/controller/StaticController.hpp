@@ -34,14 +34,6 @@
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
-static const std::unordered_map<std::string, std::string> contentMap = {
-        {"js", "text/javascript"},
-        {"mjs", "text/javascript"},
-        {"html", "text/html"},
-        {"htm", "text/html"},
-        {"css", "text/css"},
-        {"svg", "image/svg+xml"}};
-
 class StaticController : public oatpp::web::server::api::ApiController {
     using oatpp::web::server::api::ApiController::ApiController;
 
