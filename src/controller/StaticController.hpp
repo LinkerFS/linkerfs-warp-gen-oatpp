@@ -69,9 +69,10 @@ public:
         } else {
             fileName = "index.html";
         }
-        QByteArray data = loadFile(dir.filePath(fileName));
-        QMimeType type = mimeDatabase.mimeTypeForFileNameAndData(fileName, data);
-        auto resp = ResponseFactory::createResponse(Status::CODE_200, data.data());
+        QByteArray fileData = loadFile(dir.filePath(fileName));
+        QMimeType type = mimeDatabase.mimeTypeForFileNameAndData(fileName, fileData);
+        auto respData = oatpp::String(fileData.data(), fileData.size());
+        auto resp = ResponseFactory::createResponse(Status::CODE_200, respData);
         resp->putHeader(Header::CONTENT_TYPE, type.name().toStdString());
         return resp;
     }
