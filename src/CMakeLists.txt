@@ -1,7 +1,10 @@
 # Qt
-set(QT_MINIMUM_VERSION "6.6.0")
+set(QT_MINIMUM_VERSION "6.4.2")
 find_package(Qt6 ${QT_MINIMUM_VERSION} REQUIRED COMPONENTS Core LinguistTools)
-
+if (WIN32)
+    #Required for QNtfsPermissionCheckGuard
+    set(QT_MINIMUM_VERSION "6.6.0")
+endif ()
 # oat++
 find_package(oatpp REQUIRED)
 find_package(oatpp-swagger REQUIRED)
