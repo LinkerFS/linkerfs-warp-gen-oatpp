@@ -1,6 +1,6 @@
 # Qt
 set(QT_MINIMUM_VERSION "6.6.0")
-find_package(Qt6 ${QT_MINIMUM_VERSION} REQUIRED COMPONENTS Core)
+find_package(Qt6 ${QT_MINIMUM_VERSION} REQUIRED COMPONENTS Core LinguistTools)
 
 # oat++
 find_package(oatpp REQUIRED)
@@ -29,4 +29,23 @@ set_target_properties(linkerfs_warp_gen_oatpp PROPERTIES OUTPUT_NAME "lwg_server
 target_include_directories(linkerfs_warp_gen_oatpp
         PUBLIC ${oatpp_INCLUDE_DIRS} ${oatpp-swagger_INCLUDE_DIRS}
         PRIVATE ${PROJECT_SOURCE_DIR}/src
+)
+
+set(I18N_LOCALE zh-cn)
+foreach (lang ${I18N_LOCALE})
+    list(APPEND TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/i18n/${lang}.ts")
+endforeach ()
+
+qt_add_lupdate(linkerfs_warp_gen_oatpp
+        TS_FILES ${TS_FILES}
+        OPTIONS -no-obsolete
+)
+qt_add_lrelease(linkerfs_warp_gen_oatpp
+        TS_FILES ${TS_FILES}
+        QM_FILES_OUTPUT_VARIABLE QM_FILES
+)
+qt_add_resources(linkerfs_warp_gen_oatpp "i18n"
+        PREFIX "/i18n"
+        BASE ${CMAKE_CURRENT_BINARY_DIR}
+        FILES ${QM_FILES}
 )
