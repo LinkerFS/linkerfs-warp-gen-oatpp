@@ -15,6 +15,7 @@ set(SOURCES
         service/FileService.cpp
         service/WarpService.cpp
         common/utils/Warp.cpp
+        OptionParser.cpp
 )
 
 add_executable(linkerfs_warp_gen_oatpp ${SOURCES} ${HEADERS})
