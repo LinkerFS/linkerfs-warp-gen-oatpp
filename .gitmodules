@@ -1,0 +1,4 @@
+[submodule "linkerfs/liblinkerfs"]
+	path = linkerfs/liblinkerfs
+	url = https://github.com/LinkerFS/liblinkerfs
+	branch = main

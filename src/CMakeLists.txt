@@ -33,6 +33,7 @@ set_target_properties(linkerfs_warp_gen_oatpp PROPERTIES OUTPUT_NAME "lwg_server
 target_include_directories(linkerfs_warp_gen_oatpp
         PUBLIC ${oatpp_INCLUDE_DIRS} ${oatpp-swagger_INCLUDE_DIRS}
         PRIVATE ${PROJECT_SOURCE_DIR}/src
+        ${liblinkerfs_INCLUDE_DIRS}
 )
 
 set(I18N_LOCALE zh-cn)
