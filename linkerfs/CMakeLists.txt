@@ -1,9 +1,7 @@
 if (BUILD_SHARED_LIBS)
-    set(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".dll")
-    set(LIBRARY_TYPE SHARED)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".dll.a")
 else ()
     set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
-    set(LIBRARY_TYPE STATIC)
 endif ()
 
 # find liblinkerfs
