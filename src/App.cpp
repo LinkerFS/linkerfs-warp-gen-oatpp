@@ -29,7 +29,7 @@
 #include <oatpp-swagger/Controller.hpp>
 #include <oatpp/network/Server.hpp>
 
-void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<uint16_t> &port) {
+void run(const oatpp::String &address, const uint16_t &port) {
 
     AppComponent components;
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
@@ -41,8 +41,8 @@ void run(const std::shared_ptr<oatpp::String> &address, const std::shared_ptr<ui
     router->addController(StaticController::createShared());
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
 
-    auto connectionProvider = oatpp::network::tcp::server::ConnectionProvider::createShared(
-            {*address, *port, oatpp::network::Address::IP_4});
+    const auto connectionProvider = oatpp::network::tcp::server::ConnectionProvider::createShared(
+            {address, port, oatpp::network::Address::IP_4});
 
     oatpp::network::Server server(connectionProvider, connectionHandler);
     OATPP_LOGD("Server", QCoreApplication::tr("Running on port %1...")
@@ -57,11 +57,10 @@ int main(int argc, char *argv[]) {
     QTranslator translator;
     QCommandLineParser &parser = (new OptionParser(&app))->parser;
     parser.process(app);
-    //todo load config from cli
-    auto address = std::make_shared<oatpp::String>(parser.value(OptionParser::address).toStdString());
-    auto port = std::make_shared<uint16_t>(parser.value(OptionParser::port).toUInt());
-    QString locale = parser.value(OptionParser::i18n);
-    const static bool debug=parser.isSet(OptionParser::debug);
+    const oatpp::String address = parser.value(OptionParser::address).toStdString();
+    const uint16_t port = parser.value(OptionParser::port).toUInt();
+    const QString locale = parser.value(OptionParser::i18n);
+    const static bool debug = parser.isSet(OptionParser::debug);
 
     oatpp::base::Environment::init();
     if (!locale.isEmpty()) {
