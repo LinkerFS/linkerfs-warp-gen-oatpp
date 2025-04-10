@@ -243,3 +243,5 @@ _deps
 3rd/*
 !3rd/CMakeLists.txt
 .idea/
+*build*/
+*linkerfs/binary/**
