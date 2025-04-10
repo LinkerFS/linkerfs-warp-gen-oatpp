@@ -52,12 +52,11 @@ namespace Utils::Warp {
     }
 
     bool creatWarpFile(const QString &filePath, const WARP_CONFIG *config) {
-        size_t size;
         bool ret;
-        const unsigned char *buf = generate_warp_file(config, &size);
-        QByteArray data = QByteArray::fromRawData((const char *) buf, static_cast<qsizetype>(size));
+        WARP_FILE warp_file=generate_warp_file(config);
+        QByteArray data = QByteArray::fromRawData(reinterpret_cast<char *>(warp_file.data), static_cast<qsizetype>(warp_file.length));
         ret = Utils::File::writeFile(filePath, data);
-        free((void *) buf);
+        release_warp_file(&warp_file);
         return ret;
     }
 }// namespace Utils::Warp
