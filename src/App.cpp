@@ -19,6 +19,8 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include "liblinkerfs/log/log_config.h"
+
 #include "AppComponent.hpp"
 #include "OptionParser.hpp"
 #include "SwaggerComponent.hpp"
@@ -61,7 +63,13 @@ int main(int argc, char *argv[]) {
     const uint16_t port = parser.value(OptionParser::port).toUInt();
     const QString locale = parser.value(OptionParser::i18n);
     const static bool debug = parser.isSet(OptionParser::debug);
-
+    liblinkerfs_set_log_handler([](const char *file, const int line, const char *func, const char *msg) {
+        if (debug) {
+            OATPP_LOGD("Liblinkerfs", "%s:%d %s: %s", file, line, func, msg);
+        } else {
+            OATPP_LOGD("Liblinkerfs", msg);
+        }
+    });
     oatpp::base::Environment::init();
     if (!locale.isEmpty()) {
         if (translator.load(QString(":/i18n/%1.qm").arg(locale.toLower()))) {
