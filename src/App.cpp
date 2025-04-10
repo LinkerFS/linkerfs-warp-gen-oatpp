@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
     auto address = std::make_shared<oatpp::String>(parser.value(OptionParser::address).toStdString());
     auto port = std::make_shared<uint16_t>(parser.value(OptionParser::port).toUInt());
     QString locale = parser.value(OptionParser::i18n);
+    const static bool debug=parser.isSet(OptionParser::debug);
 
     oatpp::base::Environment::init();
     if (!locale.isEmpty()) {

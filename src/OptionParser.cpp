@@ -24,10 +24,12 @@
 QCommandLineOption OptionParser::address = {"address", "Server listen address, default 0.0.0.0", "address", "0.0.0.0"};
 QCommandLineOption OptionParser::port = {"port", "Server listen port, default 8080", "port", "8080"};
 QCommandLineOption OptionParser::i18n = {"lang", "Locale code ID string, default en-US", "locale", ""};
+QCommandLineOption OptionParser::debug = {"debug", "Debug mode. Prints out more information."};
 
 OptionParser::OptionParser(QObject *parent) : QObject(parent) {
     parser.addOption(address);
     parser.addOption(port);
     parser.addOption(i18n);
+    parser.addOption(debug);
     parser.addHelpOption();
 }

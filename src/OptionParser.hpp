@@ -31,6 +31,7 @@ public:
     static QCommandLineOption address;
     static QCommandLineOption port;
     static QCommandLineOption i18n;
+    static QCommandLineOption debug;
     QCommandLineParser parser;
 };
 #endif//LINKERFS_WARP_GEN_OATPP_OPTIONPARSER_HPP
