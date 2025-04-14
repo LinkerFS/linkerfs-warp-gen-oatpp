@@ -46,6 +46,9 @@ class ResponseDto : public oatpp::DTO {
         info->description = "Response message";
     }
 
+private:
+    typedef oatpp::web::protocol::http::Status Status;
+
 public:
     template<typename T>
     static Object<ResponseDto> success(Object<T> &&data) {
@@ -58,13 +61,12 @@ public:
         return dto;
     }
 
-    static Object<ResponseDto> fail(const int &code, oatpp::String &&msg = "") {
-        auto response = wrapper(code, nullptr, std::move(msg));
+    static Object<ResponseDto> fail(const Status &status, oatpp::String &&msg = "") {
+        auto response = wrapper(status.code, nullptr, std::move(msg));
         return response;
     }
 
 private:
-    typedef oatpp::web::protocol::http::Status Status;
     static Object<ResponseDto> wrapper(const int &code, Any &&data, String &&msg) {
         auto dto = ResponseDto::createShared();
         dto->code = code;
