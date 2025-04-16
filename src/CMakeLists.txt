@@ -36,6 +36,14 @@ target_include_directories(linkerfs_warp_gen_oatpp
         ${liblinkerfs_INCLUDE_DIRS}
 )
 
+if(${LIBLINKERFS_FEATURE_UDF})
+    target_sources(linkerfs_warp_gen_oatpp
+            PRIVATE
+            common/utils/UDF.cpp
+            service/UDFService.cpp
+    )
+endif ()
+
 set(I18N_LOCALE zh-cn)
 foreach (lang ${I18N_LOCALE})
     list(APPEND TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/i18n/${lang}.ts")

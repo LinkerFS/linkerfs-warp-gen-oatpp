@@ -25,12 +25,17 @@
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/ListDirReqDto.hpp"
 #include "dto/response/ListDirRespDto.hpp"
+#include "liblinkerfs/config.h"
 #include "service/FileService.hpp"
 #include <QCoreApplication>
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 
+#if LIBLINKERFS_ENABLE_UDF
+#include "service/UDFService.hpp"
+#include "dto/request/ListUDFReqDto.hpp"
+#endif
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
@@ -58,8 +63,23 @@ public:
         return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
     }
 
-private:
-    FileService m_fileService;
+#if LIBLINKERFS_ENABLE_UDF
+
+    ENDPOINT_INFO(listUDF) {
+        info->summary = "Open UDF file and list content";
+        info->addConsumes<Object<ListUDFReqDto>>("application/json");
+        info->addResponse<Object<RespWithDataExample<ListUDFReqDto>>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_404, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+    }
+
+    ENDPOINT("POST", "api/file/listUDF", listUDF,
+             BODY_DTO(Object<ListUDFReqDto>, dirReqDto)) {
+        OATPP_ASSERT_HTTP(dirReqDto->udfPath, Status::CODE_400,
+                          QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
+        return createDtoResponse(Status::CODE_200, UDFService::listUDF(dirReqDto->udfPath));
+    }
+#endif
 };
 
 #include OATPP_CODEGEN_END(ApiController)
