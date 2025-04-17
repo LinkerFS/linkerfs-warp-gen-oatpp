@@ -47,9 +47,9 @@ void run(const oatpp::String &address, const uint16_t &port) {
             {address, port, oatpp::network::Address::IP_4});
 
     oatpp::network::Server server(connectionProvider, connectionHandler);
-    OATPP_LOGD("Server", QCoreApplication::tr("Running on port %1...")
+    OATPP_LOGD("Server", "%s",QCoreApplication::tr("Running on port %1...")
                                  .arg(connectionProvider->getProperty("port").toString()->c_str())
-                                 .toLocal8Bit())
+                                 .toLocal8Bit().data())
     server.run();
 }
 
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
         if (debug) {
             OATPP_LOGD("Liblinkerfs", "%s:%d %s: %s", file, line, func, msg);
         } else {
-            OATPP_LOGD("Liblinkerfs", msg);
+            OATPP_LOGD("Liblinkerfs", "%s",msg);
         }
     });
     oatpp::base::Environment::init();

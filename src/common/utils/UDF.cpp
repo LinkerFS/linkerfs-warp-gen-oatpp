@@ -37,7 +37,7 @@ oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oat
             if(!child)
             {
                 dirNodes->emplace_back(std::move(fileNode));
-                OATPP_LOGD("UDF", QCoreApplication::tr("error opening directory %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit())
+                OATPP_LOGD("UDF", "%s",QCoreApplication::tr("error opening directory %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit().data())
                 continue;
             }
             dirName->append(dirent.d_name).append("/");
@@ -52,7 +52,7 @@ oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oat
             if (!fp) {
                 fileNode->size="";
                 fileNodes->emplace_back(std::move(fileNode));
-                OATPP_LOGD("UDF", QCoreApplication::tr("error opening file %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit())
+                OATPP_LOGD("UDF", "%s",QCoreApplication::tr("error opening file %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit().data())
                 continue;
             }
             fileNode->size = std::to_string(udfread_file_size(fp));
