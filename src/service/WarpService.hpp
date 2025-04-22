@@ -26,8 +26,9 @@
 #include "dto/common/WarpConfigDto.hpp"
 class WarpService : public AbstractService {
 public:
-    static oatpp::Object<ResponseDto> createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs);
+    static oatpp::Object<ResponseDto> createWarp(const oatpp::String &savePath,
+                                                 const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs);
 };
 
 
-#endif//LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP
+#endif //LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP

@@ -23,15 +23,16 @@
 #define LINKERFS_WARP_GEN_OATPP_FILE_HPP
 
 
-#include "dto/response/ListDirRespDto.hpp"
 #include <QDir>
+#include "dto/response/ListDirRespDto.hpp"
 
 namespace Utils::File {
     oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter = QDir::Filter::NoFilter);
     oatpp::Object<ListDirRespDto> listDrivers();
-    bool checkDirWritePermission(const QString &dirPath);
+    bool checkFileWritePermission(const QFileInfo &fileInfo);
+    bool checkFileReadPermission(const QFileInfo &fileInfo);
     std::error_code makeHardLink(const std::string &srcPath, const std::string &dstPath);
     bool writeFile(const QString &filePath, const QByteArray &data);
-}// namespace Utils::File
+} // namespace Utils::File
 
-#endif//LINKERFS_WARP_GEN_OATPP_FILE_HPP
+#endif //LINKERFS_WARP_GEN_OATPP_FILE_HPP

@@ -22,6 +22,7 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
 #define LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
 
+#include <QFileInfo>
 #include "AbstractService.hpp"
 #include "dto/response/ListDirRespDto.hpp"
 
@@ -29,6 +30,9 @@ class FileService : public AbstractService {
 
 public:
     static oatpp::Object<ResponseDto> listDir(const oatpp::String &dirPath);
+    static void assertFileCanBeCreated(const QFileInfo &fileInfo);
+    static void assertFileReadable(const QFileInfo &fileInfo);
+    static void assertFileWritable(const QFileInfo &fileInfo);
 };
 
-#endif//LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP
+#endif //LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP

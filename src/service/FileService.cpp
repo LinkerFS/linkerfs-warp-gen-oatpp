@@ -20,19 +20,38 @@
  */
 
 #include "FileService.hpp"
-#include "common/utils/File.hpp"
 #include <QCoreApplication>
-#include <QDir>
+#include "common/utils/File.hpp"
 
 oatpp::Object<ResponseDto> FileService::listDir(const oatpp::String &dirPath) {
     oatpp::Object<ResponseDto> resp;
     QDir dir(dirPath->c_str());
-    if (dirPath == "")
-        resp = ResponseDto::success(Utils::File::listDrivers());
+    if (dirPath == "") resp = ResponseDto::success(Utils::File::listDrivers());
     else {
         OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_404,
                           QCoreApplication::tr("Dir %1 not found!").arg(dirPath->c_str()).toStdString())
         resp = ResponseDto::success(Utils::File::listDir(std::move(dir)));
     }
     return resp;
+}
+
+void FileService::assertFileCanBeCreated(const QFileInfo &fileInfo) {
+    OATPP_ASSERT_HTTP(!fileInfo.exists(), Status::CODE_500,
+                      QCoreApplication::tr("%1 already exists").arg(fileInfo.path()).toStdString())
+    OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(fileInfo), Status::CODE_500,
+                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.path()).toStdString())
+}
+
+void FileService::assertFileReadable(const QFileInfo &fileInfo) {
+    OATPP_ASSERT_HTTP(fileInfo.exists(), Status::CODE_500,
+                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.path()).toStdString())
+    OATPP_ASSERT_HTTP(Utils::File::checkFileReadPermission(fileInfo), Status::CODE_500,
+                      QCoreApplication::tr("%1 is not readable").arg(fileInfo.path()).toStdString())
+}
+
+void FileService::assertFileWritable(const QFileInfo &fileInfo) {
+    OATPP_ASSERT_HTTP(fileInfo.exists(), Status::CODE_500,
+                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.path()).toStdString())
+    OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(fileInfo), Status::CODE_500,
+                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.path()).toStdString())
 }

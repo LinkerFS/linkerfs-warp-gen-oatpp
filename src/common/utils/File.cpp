@@ -26,9 +26,8 @@ namespace Utils::File {
     oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter) {
         auto respData = ListDirRespDto::createShared();
         respData->dirPath = dir.path().toStdString();
-        auto filterFlag =
-                QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs |
-                QDir::Filter::Files | QDir::Filter::NoSymLinks & filter;
+        auto filterFlag = QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs | QDir::Filter::Files |
+                          QDir::Filter::NoSymLinks & filter;
         auto items = dir.entryInfoList(filterFlag);
         for (const auto &item: items) {
             if (item.isFile()) {
@@ -59,12 +58,18 @@ namespace Utils::File {
         return respData;
     }
 
-    bool checkDirWritePermission(const QString &dirPath) {
+    bool checkFileWritePermission(const QFileInfo &fileInfo) {
 #ifdef __WIN32
         QNtfsPermissionCheckGuard permissionGuard;
 #endif
-        QFileInfo fileInfo(dirPath);
         return fileInfo.isWritable();
+    }
+
+    bool checkFileReadPermission(const QFileInfo &fileInfo) {
+#ifdef __WIN32
+        QNtfsPermissionCheckGuard permissionGuard;
+#endif
+        return fileInfo.isReadable();
     }
 
     std::error_code makeHardLink(const std::string &srcPath, const std::string &dstPath) {
@@ -75,12 +80,11 @@ namespace Utils::File {
 
     bool writeFile(const QString &filePath, const QByteArray &data) {
         QFile file(filePath);
-        if (!file.open(QIODevice::WriteOnly | QIODevice::NewOnly))
-            return false;
+        if (!file.open(QIODevice::WriteOnly | QIODevice::NewOnly)) return false;
         if (file.write(data) != data.size()) {
             file.remove();
             return false;
         }
         return true;
     }
-}// namespace Utils::File
+} // namespace Utils::File
