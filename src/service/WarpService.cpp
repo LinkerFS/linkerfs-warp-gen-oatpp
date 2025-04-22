@@ -35,7 +35,7 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
     auto resp = CreateWarpRespDto::createShared();
     auto warpConfigsForLib = std::vector<WARP_CONFIG>();
     warpConfigsForLib.reserve(warpConfigs->size());
-    auto warpTargetsForLibPtr = std::vector<std::shared_ptr<WARP_TARGET>>(warpConfigs->size());
+    auto warpTargetsForLibPtr = std::vector<std::unique_ptr<WARP_TARGET[]>>(warpConfigs->size());
     warpTargetsForLibPtr.reserve(warpConfigs->size());
     //validate
     for (auto const &config: *warpConfigs) {
@@ -50,8 +50,7 @@ WarpService::createWarp(const oatpp::String &savePath, oatpp::Vector<oatpp::Obje
                                   .arg(fileName)
                                   .toStdString())
         configForLib.warp_count = config->warpTargets->size();
-        std::shared_ptr<WARP_TARGET> targetsForLib(new WARP_TARGET[config->warpTargets->size()],
-                                                   std::default_delete<WARP_TARGET[]>());
+        std::unique_ptr<WARP_TARGET[]> targetsForLib(new WARP_TARGET[config->warpTargets->size()]);
         configForLib.warp_targets = targetsForLib.get();
         for (uint32_t i = 0; i < config->warpTargets->size(); ++i) {
             auto target = config->warpTargets[i];
