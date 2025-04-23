@@ -34,6 +34,9 @@ class UDFService : public AbstractService {
 
 public:
     static oatpp::Object<ResponseDto> listUDF(const oatpp::String &udfPath);
+
+private:
+    static std::unique_ptr<udfread, decltype(&udfread_close)> openUdf(const char *udfPath);
 };
 
 #endif

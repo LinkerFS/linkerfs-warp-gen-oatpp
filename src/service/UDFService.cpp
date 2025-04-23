@@ -19,42 +19,40 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "common/utils/UDF.hpp"
-#include "udfread/udfread.h"
 #include "UDFService.hpp"
 #include <QCoreApplication>
-#include <QFile>
+#include <QDir>
+#include "FileService.hpp"
+#include "common/utils/UDF.hpp"
+#include "dto/response/ListUDFRespDto.hpp"
+#include "liblinkerfs/generator.h"
+
+std::unique_ptr<udfread, decltype(&udfread_close)> UDFService::openUdf(const char *udfPath) {
+    const QFile udfFile(udfPath);
+    OATPP_ASSERT_HTTP(udfFile.exists(), Status::CODE_404,
+                      QCoreApplication::tr("File %1 not found!").arg(udfPath).toStdString())
+    auto udf = std::unique_ptr<udfread, decltype(&udfread_close)>(udfread_init(), udfread_close);
+
+    OATPP_ASSERT_HTTP(udf.get(), Status::CODE_500, QCoreApplication::tr("udfread failed to initialize").toStdString())
+    OATPP_ASSERT_HTTP(udfread_open(udf.get(), udfPath) >= 0, Status::CODE_500,
+                      QCoreApplication::tr("udfread failed to open").toStdString())
+    return std::move(udf);
+}
 
 oatpp::Object<ResponseDto> UDFService::listUDF(const oatpp::String &udfPath) {
-    oatpp::Object<ResponseDto> resp;
-    QFile udfFile(udfPath->c_str());
-    OATPP_ASSERT_HTTP(udfFile.exists(), Status::CODE_404,
-                      QCoreApplication::tr("File %1 not found!").arg(udfPath->c_str()).toStdString())
-    udfread *udf=udfread_init();
-    if (!udf)
-        return ResponseDto::fail(Status::CODE_500,QCoreApplication::tr("udfread failed to initialize").toStdString());
-    if(udfread_open(udf,udfPath->c_str())<0)
-    {
-        udfread_close(udf);
-        return ResponseDto::fail(Status::CODE_500,QCoreApplication::tr("udfread failed to open").toStdString());
-    }
-    UDFDIR *root= udfread_opendir(udf,"/");
-    if(!root)
-    {
-        udfread_closedir(root);
-        udfread_close(udf);
-        return ResponseDto::fail(Status::CODE_500,QCoreApplication::tr("udfread failed to open root directory").toStdString());
-    }
-    auto data=ListUDFRespDto::createShared();
-    auto rootNode=FileNodeDto::createShared();
-
-    data->udfPath=udfPath;
-    data->volumeId= udfread_get_volume_id(udf);
-    data->fileTree=rootNode;
-    rootNode->name="/";
-    rootNode->children=Utils::UDF::listDir(root,data->fileTree->name);
-    resp=ResponseDto::success(std::move(data));
-    udfread_closedir(root);
-    udfread_close(udf);
+    const QFile udfFile(udfPath->c_str());
+    const auto udf = openUdf(udfPath->c_str());
+    const auto root =
+            std::unique_ptr<UDFDIR, decltype(&udfread_closedir)>(udfread_opendir(udf.get(), "/"), udfread_closedir);
+    OATPP_ASSERT_HTTP(root, Status::CODE_500,
+                      QCoreApplication::tr("udfread failed to open root directory").toStdString())
+    auto data = ListUDFRespDto::createShared();
+    auto &&rootNode = FileNodeDto::createShared();
+    data->udfPath = udfPath;
+    data->volumeId = udfread_get_volume_id(udf.get());
+    data->fileTree = rootNode;
+    rootNode->name = "/";
+    rootNode->children = Utils::UDF::listDir(root.get(), data->fileTree->name);
+    const oatpp::Object<ResponseDto> resp = ResponseDto::success(std::move(data));
     return resp;
 }
