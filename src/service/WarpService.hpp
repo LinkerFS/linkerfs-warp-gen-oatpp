@@ -28,6 +28,7 @@ class WarpService : public AbstractService {
 public:
     static oatpp::Object<ResponseDto> createWarp(const oatpp::String &savePath,
                                                  const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs);
+    static bool checkWarpTargetNumWithinRange(const size_t& size);
 };
 
 

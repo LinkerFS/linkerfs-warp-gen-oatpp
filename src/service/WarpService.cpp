@@ -25,6 +25,7 @@
 #include "common/utils/File.hpp"
 #include "common/utils/Warp.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
+#include "linkerfs/filesystem/data/header_info.h"
 
 oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath,
                                                    const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs) {
@@ -44,7 +45,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         OATPP_ASSERT_HTTP(!config->warpTargets->empty(), Status::CODE_500,
                           QCoreApplication::tr("Config %1 has no target").arg(fileName).toStdString())
         OATPP_ASSERT_HTTP(
-                config->warpTargets->size() <= 0xffff, Status::CODE_500,
+                checkWarpTargetNumWithinRange(config->warpTargets->size()), Status::CODE_500,
                 QCoreApplication::tr("Number of target in config %1 is out of range").arg(fileName).toStdString())
         configForLib.warp_count = config->warpTargets->size();
         std::unique_ptr<WARP_TARGET[]> targetsForLib(new WARP_TARGET[config->warpTargets->size()]);
@@ -86,4 +87,9 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         }
     }
     return ResponseDto::success(std::move(resp));
+}
+
+bool WarpService::checkWarpTargetNumWithinRange(const size_t& size) {
+    constexpr size_t maxSize = std::numeric_limits<decltype(LINKERFS_HEADER::num_parts)>::max();
+    return size <= maxSize;
 }
