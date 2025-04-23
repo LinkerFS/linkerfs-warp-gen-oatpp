@@ -23,17 +23,16 @@
 #include <QCoreApplication>
 
 oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oatpp::String &dirName){
-    struct udfread_dirent dirent{};
+    udfread_dirent dirent{};
     const size_t dirLength=dirName->size();
-    auto dirNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
-    auto fileNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
+    const auto dirNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
+    const auto fileNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
     while (udfread_readdir(udfDir, &dirent)) {
         if (!strcmp(dirent.d_name, ".") || !strcmp(dirent.d_name, "..")) continue;
         auto fileNode=FileNodeDto::createShared();
         fileNode->name = dirent.d_name;
         if (dirent.d_type == UDF_DT_DIR) {
-            UDFDIR *child;
-            child = udfread_opendir_at(udfDir, dirent.d_name);
+            auto child=std::unique_ptr<UDFDIR,decltype(&udfread_closedir)>(udfread_opendir_at(udfDir, dirent.d_name),udfread_closedir);
             if(!child)
             {
                 dirNodes->emplace_back(std::move(fileNode));
@@ -41,22 +40,18 @@ oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oat
                 continue;
             }
             dirName->append(dirent.d_name).append("/");
-            fileNode->children=listDir(child,dirName);
+            fileNode->children=listDir(child.get(),dirName);
             dirNodes->emplace_back(std::move(fileNode));
-            udfread_closedir(child);
             dirName->resize(dirLength);
         } else {
-            UDFFILE *fp;
-            fp = udfread_file_openat(udfDir, dirent.d_name);
-
-            if (!fp) {
+            const auto udfFile=std::unique_ptr<UDFFILE,decltype(&udfread_file_close)>(udfread_file_openat(udfDir, dirent.d_name),udfread_file_close);
+            if (!udfFile) {
                 fileNode->size="";
                 fileNodes->emplace_back(std::move(fileNode));
                 OATPP_LOGD("UDF", "%s",QCoreApplication::tr("error opening file %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit().data())
                 continue;
             }
-            fileNode->size = std::to_string(udfread_file_size(fp));
-            udfread_file_close(fp);
+            fileNode->size = std::to_string(udfread_file_size(udfFile.get()));
             fileNodes->emplace_back(std::move(fileNode));
         }
     }
