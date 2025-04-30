@@ -22,7 +22,6 @@
 #include "Warp.hpp"
 #include "File.hpp"
 #include "liblinkerfs/generator.h"
-#include <QFileInfo>
 
 namespace Utils::Warp {
     bool targetValidateSize(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *targetForLib) {
@@ -52,11 +51,15 @@ namespace Utils::Warp {
     }
 
     bool createWarpFile(const QString &filePath, const WARP_CONFIG *config) {
-        bool ret;
-        WARP_FILE warp_file=generate_warp_file(config);
-        QByteArray data = QByteArray::fromRawData(reinterpret_cast<char *>(warp_file.data), static_cast<qsizetype>(warp_file.length));
-        ret = Utils::File::writeFile(filePath, data);
-        release_warp_file(&warp_file);
+        WARP_FILE warpFile = generate_warp_file(config);
+        const bool ret = createWarpFile(filePath, warpFile);
+        release_warp_file(&warpFile);
         return ret;
     }
+
+    inline bool createWarpFile(const QString &filePath, const WARP_FILE &warpFile) {
+        const QByteArray data = QByteArray::fromRawData(reinterpret_cast<char *>(warpFile.data), warpFile.length);
+        return  Utils::File::writeFile(filePath, data);
+    }
+
 }// namespace Utils::Warp
