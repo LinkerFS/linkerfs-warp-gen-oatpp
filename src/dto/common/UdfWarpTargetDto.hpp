@@ -19,28 +19,37 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LINKERFS_WARP_GEN_OATPP_CREATEUDFWARPREQDTO_HPP
-#define LINKERFS_WARP_GEN_OATPP_CREATEUDFWARPREQDTO_HPP
+#ifndef LINKERFS_WARP_GEN_OATPP_UDFWARPTARGETDTO_HPP
+#define LINKERFS_WARP_GEN_OATPP_UDFWARPTARGETDTO_HPP
 
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
-#include "dto/common/UdfWarpTargetDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class CreateUdfWarpReqDto : public oatpp::DTO {
-    DTO_INIT(CreateUdfWarpReqDto, DTO)
+class UdfWarpTargetDto : public oatpp::DTO {
+    DTO_INIT(UdfWarpTargetDto, DTO)
 
-    DTO_FIELD(String, udfPath);
-    DTO_FIELD_INFO(udfPath) { info->description = "absolute path of UDF file to remap data"; }
+    DTO_FIELD(String, warpFileName);
+    DTO_FIELD_INFO(warpFileName) {
+        info->description = "name of warp file";
+    }
 
-    DTO_FIELD(String, savePath);
-    DTO_FIELD_INFO(savePath) { info->description = "absolute path of directory to save warp configuration files"; }
+    DTO_FIELD(String, filePath);
+    DTO_FIELD_INFO(filePath) {
+        info->description = "absolute path within a UDF file containing remap data";
+    }
+    DTO_FIELD(String, dataOffset);
+    DTO_FIELD_INFO(dataOffset) {
+        info->description = "the offset where the data begins in this file";
+    }
 
-    DTO_FIELD(Vector<Object<UdfWarpTargetDto>>, warpTargets);
-    DTO_FIELD_INFO(warpTargets) { info->description = "warp targets in UDF file"; }
+    DTO_FIELD(String, dataSize);
+    DTO_FIELD_INFO(dataSize) {
+        info->description = "size of data to remap";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_OATPP_CREATEUDFWARPREQDTO_HPP
+#endif //LINKERFS_WARP_GEN_OATPP_UDFWARPTARGETDTO_HPP
