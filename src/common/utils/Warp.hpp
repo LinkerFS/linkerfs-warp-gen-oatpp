@@ -37,5 +37,6 @@ namespace Utils::Warp {
     bool targetValidateSize(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *targetForLib);
     bool canUseHardLink(const WARP_CONFIG &config);
     bool creatWarpFile(const QString &filePath, const WARP_CONFIG *config);
+    bool createWarpFile(const QString &filePath, const WARP_CONFIG *config);
 }// namespace Utils::Warp
 #endif//LINKERFS_WARP_GEN_OATPP_WARP_HPP

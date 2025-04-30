@@ -79,7 +79,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
                 continue;
             }
         }
-        ret = Utils::Warp::creatWarpFile(warpFilePath, &configForLib);
+        ret = Utils::Warp::createWarpFile(warpFilePath, &configForLib);
         if (ret) {
             resp->warpFiles->emplace_back(warpFilePath.toStdString());
         } else {

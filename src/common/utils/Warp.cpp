@@ -51,7 +51,7 @@ namespace Utils::Warp {
         return false;
     }
 
-    bool creatWarpFile(const QString &filePath, const WARP_CONFIG *config) {
+    bool createWarpFile(const QString &filePath, const WARP_CONFIG *config) {
         bool ret;
         WARP_FILE warp_file=generate_warp_file(config);
         QByteArray data = QByteArray::fromRawData(reinterpret_cast<char *>(warp_file.data), static_cast<qsizetype>(warp_file.length));
