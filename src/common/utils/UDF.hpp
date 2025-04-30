@@ -26,11 +26,15 @@
 
 #if LIBLINKERFS_ENABLE_UDF
 
-#include "udfread/udfread.h"
 #include "dto/common/FileNodeDto.hpp"
+#include "dto/common/UdfWarpTargetDto.hpp"
+#include "liblinkerfs/udf/udf.h"
+#include "udfread/udfread.h"
 
 namespace Utils::UDF{
     oatpp::Vector<oatpp::Object<FileNodeDto>> listDir(UDFDIR *udfDir,oatpp::String &dirName);
+    bool targetValidateSizeAndFill(const oatpp::Object<UdfWarpTargetDto> &target, udf_warp_target *udfWarpTarget,
+                            UDFFILE_INFO *fileInfo);
 }// namespace Utils::UDF
 
 #endif

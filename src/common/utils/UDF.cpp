@@ -62,3 +62,19 @@ oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oat
     return ret;
 }
 
+bool Utils::UDF::targetValidateSizeAndFill(const oatpp::Object<UdfWarpTargetDto> &target, udf_warp_target *udfWarpTarget,
+                                    UDFFILE_INFO *fileInfo) {
+    bool ok;
+    const qint64 dataOffset = QString(target->dataOffset->data()).toLongLong(&ok);
+    if (!ok || dataOffset < 0)
+        return false;
+    const qint64 dataSize = QString(target->dataSize->data()).toLongLong(&ok);
+    if (!ok || dataSize <= 0)
+        return false;
+    if (dataOffset + dataSize > fileInfo->length)
+        return false;
+    udfWarpTarget->offset_in_file = dataOffset;
+    udfWarpTarget->size_to_read = dataSize;
+    udfWarpTarget->file_info = fileInfo;
+    return ok;
+}
