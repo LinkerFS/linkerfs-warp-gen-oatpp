@@ -38,7 +38,7 @@ namespace Utils::Warp {
         warpTarget->file_path = target->filePath->data();
         warpTarget->offset_in_file = dataOffset;
         warpTarget->size_to_read = dataSize;
-        warpTarget->path_length = static_cast<int32_t>(file.path().length());
+        warpTarget->path_length = static_cast<int32_t>(file.absoluteFilePath().length());
         return dataSize + dataOffset <= file.size();
     }
 
