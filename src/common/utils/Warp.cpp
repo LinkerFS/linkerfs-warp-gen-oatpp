@@ -24,21 +24,21 @@
 #include "liblinkerfs/generator.h"
 
 namespace Utils::Warp {
-    bool targetValidateSize(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *targetForLib) {
+    bool targetValidateSizeAndFill(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *warpTarget) {
         bool ok;
-        QFileInfo file(target->filePath->data());
+        const QFileInfo file(target->filePath->data());
         if (!file.exists() && file.isFile())
             return false;
-        qint64 dataOffset = QString(target->dataOffset->data()).toLongLong(&ok);
+        const qint64 dataOffset = QString(target->dataOffset->data()).toLongLong(&ok);
         if (!ok || dataOffset < 0)
             return false;
-        qint64 dataSize = QString(target->dataSize->data()).toLongLong(&ok);
+        const qint64 dataSize = QString(target->dataSize->data()).toLongLong(&ok);
         if (!ok || dataSize <= 0)
             return false;
-        targetForLib->file_path = target->filePath->data();
-        targetForLib->offset_in_file = dataOffset;
-        targetForLib->size_to_read = dataSize;
-        targetForLib->path_length = static_cast<int32_t>(file.path().length());
+        warpTarget->file_path = target->filePath->data();
+        warpTarget->offset_in_file = dataOffset;
+        warpTarget->size_to_read = dataSize;
+        warpTarget->path_length = static_cast<int32_t>(file.path().length());
         return dataSize + dataOffset <= file.size();
     }
 

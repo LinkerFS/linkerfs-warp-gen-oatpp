@@ -31,12 +31,12 @@
 
 namespace Utils::Warp {
     /**
-     * validate data size and fill data to WARP_TARGET
+     * validate data size and transform data into WARP_TARGET
      * @param target target info
-     * @param targetForLib object to save transformed data
+     * @param warpTarget pointer to object that stores transformed data for library use
      * @return true is valid otherwise false
      */
-    bool targetValidateSize(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *targetForLib);
+    bool targetValidateSizeAndFill(const oatpp::Object<WarpTargetDto> &target, WARP_TARGET *warpTarget);
     bool canUseHardLink(const WARP_CONFIG &config);
     bool createWarpFile(const QString &filePath, const WARP_CONFIG *config);
     bool createWarpFile(const QString &filePath, const WARP_FILE &warpFile);

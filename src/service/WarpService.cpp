@@ -52,7 +52,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         configForLib.warp_targets = targetsForLib.get();
         for (uint32_t i = 0; i < config->warpTargets->size(); ++i) {
             auto target = config->warpTargets[i];
-            OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSize(target, targetsForLib.get() + i), Status::CODE_500,
+            OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSizeAndFill(target, targetsForLib.get() + i), Status::CODE_500,
                               QCoreApplication::tr("Target %1 in config %2 is invalid")
                                       .arg(QString::number(i + 1), fileName)
                                       .toStdString())
