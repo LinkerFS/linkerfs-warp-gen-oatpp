@@ -15,9 +15,10 @@ set(SOURCES
         App.cpp
         ErrorHandler.cpp
         common/utils/File.cpp
+        common/utils/Warp.cpp
+        common/wrapper/WarpConfigWrapper.cpp
         service/FileService.cpp
         service/WarpService.cpp
-        common/utils/Warp.cpp
         OptionParser.cpp
 )
 

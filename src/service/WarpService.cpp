@@ -24,6 +24,7 @@
 #include "FileService.hpp"
 #include "common/utils/File.hpp"
 #include "common/utils/Warp.hpp"
+#include "common/wrapper/WarpConfigWrapper.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
 #include "linkerfs/filesystem/data/header_info.h"
 
@@ -33,13 +34,9 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
     OATPP_ASSERT_HTTP(QFileInfo(savePath->data()).isDir(), Status::CODE_500,
                       QCoreApplication::tr("%1 is not a directory").arg(savePath->data()).toStdString())
     auto resp = CreateWarpRespDto::createShared();
-    auto warpConfigsForLib = std::vector<WARP_CONFIG>();
-    warpConfigsForLib.reserve(warpConfigs->size());
-    auto warpTargetsForLibPtr = std::vector<std::unique_ptr<WARP_TARGET[]>>(warpConfigs->size());
-    warpTargetsForLibPtr.reserve(warpConfigs->size());
+    auto transformedConfigs = std::vector<WarpConfigWrapper>();
     //validate
     for (auto const &config: *warpConfigs) {
-        auto configForLib = WARP_CONFIG();
         char *fileName = config->fileName->data();
         FileService::assertFileCanBeCreated(QFileInfo(dir.filePath(fileName)));
         OATPP_ASSERT_HTTP(!config->warpTargets->empty(), Status::CODE_500,
@@ -47,27 +44,21 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         OATPP_ASSERT_HTTP(
                 checkWarpTargetNumWithinRange(config->warpTargets->size()), Status::CODE_500,
                 QCoreApplication::tr("Number of target in config %1 is out of range").arg(fileName).toStdString())
-        configForLib.warp_count = config->warpTargets->size();
-        std::unique_ptr<WARP_TARGET[]> targetsForLib(new WARP_TARGET[config->warpTargets->size()]);
-        configForLib.warp_targets = targetsForLib.get();
+        auto wrapper = WarpConfigWrapper(config->warpTargets->size(), config->fileName);
         for (uint32_t i = 0; i < config->warpTargets->size(); ++i) {
-            auto target = config->warpTargets[i];
-            OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSizeAndFill(target, targetsForLib.get() + i), Status::CODE_500,
+            const auto &target = config->warpTargets[i];
+            OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSizeAndFill(target, &wrapper[i]), Status::CODE_500,
                               QCoreApplication::tr("Target %1 in config %2 is invalid")
                                       .arg(QString::number(i + 1), fileName)
                                       .toStdString())
         }
-        warpConfigsForLib.emplace_back(configForLib);
-        warpTargetsForLibPtr.emplace_back(std::move(targetsForLib));
+        transformedConfigs.emplace_back(std::move(wrapper));
     }
-    for (decltype(warpConfigs->size()) i = 0; i < warpConfigs->size(); ++i) {
-        bool ret;
-        oatpp::Object<WarpConfigDto> config = warpConfigs->at(i);
-        WARP_CONFIG configForLib = warpConfigsForLib.at(i);
-        QString warpFilePath = dir.filePath(config->fileName->c_str());
-        if (Utils::Warp::canUseHardLink(warpConfigsForLib.at(i))) {
+    for (const auto &config: transformedConfigs) {
+        QString warpFilePath = dir.filePath(config.getWarpFileName().c_str());
+        if (Utils::Warp::canUseHardLink(config.getConfig())) {
             std::error_code errorCode =
-                    Utils::File::makeHardLink(configForLib.warp_targets->file_path, warpFilePath.toStdString());
+                    Utils::File::makeHardLink(config.getConfig().warp_targets->file_path, warpFilePath.toStdString());
             if (errorCode) {
                 OATPP_LOGW("WarpService", "%s",
                            QCoreApplication::tr("Hardlink %1 create failed for %2. fallback now...")
@@ -79,8 +70,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
                 continue;
             }
         }
-        ret = Utils::Warp::createWarpFile(warpFilePath, &configForLib);
-        if (ret) {
+        if (Utils::Warp::createWarpFile(warpFilePath, &config.getConfig())) {
             resp->warpFiles->emplace_back(warpFilePath.toStdString());
         } else {
             resp->failedFiles->emplace_back(warpFilePath.toStdString());
@@ -89,7 +79,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
     return ResponseDto::success(std::move(resp));
 }
 
-bool WarpService::checkWarpTargetNumWithinRange(const size_t& size) {
+bool WarpService::checkWarpTargetNumWithinRange(const size_t &size) {
     constexpr size_t maxSize = std::numeric_limits<decltype(LINKERFS_HEADER::num_parts)>::max();
     return size <= maxSize;
 }
