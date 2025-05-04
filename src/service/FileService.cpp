@@ -37,21 +37,21 @@ oatpp::Object<ResponseDto> FileService::listDir(const oatpp::String &dirPath) {
 
 void FileService::assertFileCanBeCreated(const QFileInfo &fileInfo) {
     OATPP_ASSERT_HTTP(!fileInfo.exists(), Status::CODE_500,
-                      QCoreApplication::tr("%1 already exists").arg(fileInfo.path()).toStdString())
-    OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(QFileInfo(fileInfo.path())), Status::CODE_500,
-                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.path()).toStdString())
+                      QCoreApplication::tr("%1 already exists").arg(fileInfo.absoluteFilePath()).toStdString())
+    OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(QFileInfo(fileInfo.absolutePath())), Status::CODE_500,
+                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.absoluteFilePath()).toStdString())
 }
 
 void FileService::assertFileReadable(const QFileInfo &fileInfo) {
     OATPP_ASSERT_HTTP(fileInfo.exists(), Status::CODE_500,
-                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.path()).toStdString())
+                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.absoluteFilePath()).toStdString())
     OATPP_ASSERT_HTTP(Utils::File::checkFileReadPermission(fileInfo), Status::CODE_500,
-                      QCoreApplication::tr("%1 is not readable").arg(fileInfo.path()).toStdString())
+                      QCoreApplication::tr("%1 is not readable").arg(fileInfo.absoluteFilePath()).toStdString())
 }
 
 void FileService::assertFileWritable(const QFileInfo &fileInfo) {
     OATPP_ASSERT_HTTP(fileInfo.exists(), Status::CODE_500,
-                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.path()).toStdString())
+                      QCoreApplication::tr("%1 does not exist").arg(fileInfo.absoluteFilePath()).toStdString())
     OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(fileInfo), Status::CODE_500,
-                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.path()).toStdString())
+                      QCoreApplication::tr("%1 is not writable").arg(fileInfo.absoluteFilePath()).toStdString())
 }
