@@ -33,6 +33,7 @@ public:
     static void assertFileCanBeCreated(const QFileInfo &fileInfo);
     static void assertFileReadable(const QFileInfo &fileInfo);
     static void assertFileWritable(const QFileInfo &fileInfo);
+    static bool tryCreateHardLink(const std::string &srcPath,const std::string &dstPath);
 };
 
 #endif //LINKERFS_WARP_GEN_OATPP_FILESERVICE_HPP

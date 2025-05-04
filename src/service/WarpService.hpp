@@ -22,13 +22,20 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP
 #define LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP
 
+#include <QDir>
+
+
 #include "AbstractService.hpp"
+#include "common/wrapper/WarpConfigWrapper.hpp"
 #include "dto/common/WarpConfigDto.hpp"
+
 class WarpService : public AbstractService {
 public:
     static oatpp::Object<ResponseDto> createWarp(const oatpp::String &savePath,
                                                  const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs);
-    static bool checkWarpTargetNumWithinRange(const size_t& size);
+    static bool checkWarpTargetNumWithinRange(const size_t &size);
+    static oatpp::Object<ResponseDto> createWarp(const std::vector<WarpConfigWrapper> &warpConfigs,
+                                                   const QDir &saveDir);
 };
 
 

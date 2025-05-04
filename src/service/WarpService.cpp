@@ -24,21 +24,19 @@
 #include "FileService.hpp"
 #include "common/utils/File.hpp"
 #include "common/utils/Warp.hpp"
-#include "common/wrapper/WarpConfigWrapper.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
 #include "linkerfs/filesystem/data/header_info.h"
 
 oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath,
                                                    const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs) {
-    const QDir dir(savePath->data());
+    const QDir saveDir(savePath->data());
     OATPP_ASSERT_HTTP(QFileInfo(savePath->data()).isDir(), Status::CODE_500,
                       QCoreApplication::tr("%1 is not a directory").arg(savePath->data()).toStdString())
-    auto resp = CreateWarpRespDto::createShared();
     auto transformedConfigs = std::vector<WarpConfigWrapper>();
     //validate
     for (auto const &config: *warpConfigs) {
         char *fileName = config->fileName->data();
-        FileService::assertFileCanBeCreated(QFileInfo(dir.filePath(fileName)));
+        FileService::assertFileCanBeCreated(QFileInfo(saveDir.filePath(fileName)));
         OATPP_ASSERT_HTTP(!config->warpTargets->empty(), Status::CODE_500,
                           QCoreApplication::tr("Config %1 has no target").arg(fileName).toStdString())
         OATPP_ASSERT_HTTP(
@@ -54,21 +52,23 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         }
         transformedConfigs.emplace_back(std::move(wrapper));
     }
-    for (const auto &config: transformedConfigs) {
-        QString warpFilePath = dir.filePath(config.getWarpFileName().c_str());
-        if (Utils::Warp::canUseHardLink(config.getConfig())) {
-            std::error_code errorCode =
-                    Utils::File::makeHardLink(config.getConfig().warp_targets->file_path, warpFilePath.toStdString());
-            if (errorCode) {
-                OATPP_LOGW("WarpService", "%s",
-                           QCoreApplication::tr("Hardlink %1 create failed for %2. fallback now...")
-                                   .arg(warpFilePath, QString::fromLocal8Bit(errorCode.message().data()))
-                                   .toLocal8Bit()
-                                   .data())
-            } else {
-                resp->hardlinkFiles->emplace_back(warpFilePath.toStdString());
-                continue;
-            }
+    return createWarp(transformedConfigs,saveDir);
+}
+
+bool WarpService::checkWarpTargetNumWithinRange(const size_t &size) {
+    constexpr size_t maxSize = std::numeric_limits<decltype(LINKERFS_HEADER::num_parts)>::max();
+    return size <= maxSize;
+}
+
+oatpp::Object<ResponseDto> WarpService::createWarp(const std::vector<WarpConfigWrapper> &warpConfigs,
+                                                   const QDir &saveDir) {
+    auto &&resp = CreateWarpRespDto::createShared();
+    for (const auto &config: warpConfigs) {
+        QString warpFilePath = saveDir.filePath(config.getWarpFileName().c_str());
+        if (Utils::Warp::canUseHardLink(config.getConfig()) &&
+            FileService::tryCreateHardLink(config.getConfig().warp_targets->file_path, warpFilePath.toStdString())) {
+            resp->hardlinkFiles->emplace_back(warpFilePath.toStdString());
+            continue;
         }
         if (Utils::Warp::createWarpFile(warpFilePath, &config.getConfig())) {
             resp->warpFiles->emplace_back(warpFilePath.toStdString());
@@ -77,9 +77,4 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         }
     }
     return ResponseDto::success(std::move(resp));
-}
-
-bool WarpService::checkWarpTargetNumWithinRange(const size_t &size) {
-    constexpr size_t maxSize = std::numeric_limits<decltype(LINKERFS_HEADER::num_parts)>::max();
-    return size <= maxSize;
 }

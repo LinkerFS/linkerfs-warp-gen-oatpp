@@ -55,3 +55,16 @@ void FileService::assertFileWritable(const QFileInfo &fileInfo) {
     OATPP_ASSERT_HTTP(Utils::File::checkFileWritePermission(fileInfo), Status::CODE_500,
                       QCoreApplication::tr("%1 is not writable").arg(fileInfo.absoluteFilePath()).toStdString())
 }
+
+bool FileService::tryCreateHardLink(const std::string &srcPath, const std::string &dstPath) {
+    bool ret = true;
+    if (const std::error_code errorCode = Utils::File::makeHardLink(srcPath, dstPath)) {
+        OATPP_LOGW("FileService", "%s",
+                   QCoreApplication::tr("Hardlink %1 create failed for %2. fallback now...")
+                           .arg(srcPath.c_str(), QString::fromLocal8Bit(errorCode.message().data()))
+                           .toLocal8Bit()
+                           .data())
+        ret = false;
+    }
+    return ret;
+}
