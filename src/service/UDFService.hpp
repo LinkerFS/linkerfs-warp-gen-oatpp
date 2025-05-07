@@ -27,14 +27,15 @@
 #if LIBLINKERFS_ENABLE_UDF
 
 #include "AbstractService.hpp"
-#include "dto/response/ListUDFRespDto.hpp"
+#include "dto/common/UdfWarpTargetDto.hpp"
 #include "udfread/udfread.h"
 
 class UDFService : public AbstractService {
 
 public:
     static oatpp::Object<ResponseDto> listUDF(const oatpp::String &udfPath);
-
+    static oatpp::Object<ResponseDto> createWarp(const oatpp::String &udfPath, const oatpp::String &savePath,
+                                                 const oatpp::Vector<oatpp::Object<UdfWarpTargetDto>> &warpTargets);
 private:
     static std::unique_ptr<udfread, decltype(&udfread_close)> openUdf(const char *udfPath);
 };
