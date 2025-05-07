@@ -17,6 +17,7 @@ set(SOURCES
         common/utils/File.cpp
         common/utils/Warp.cpp
         common/wrapper/WarpConfigWrapper.cpp
+        common/wrapper/WarpFileWrapper.cpp
         service/FileService.cpp
         service/WarpService.cpp
         OptionParser.cpp
