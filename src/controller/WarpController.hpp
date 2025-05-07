@@ -22,14 +22,18 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP
 #define LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP
 
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/core/macro/component.hpp>
+#include <oatpp/web/server/api/ApiController.hpp>
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/CreateWarpReqDto.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
+#include "liblinkerfs/config.h"
 #include "service/WarpService.hpp"
-#include <oatpp/core/macro/codegen.hpp>
-#include <oatpp/core/macro/component.hpp>
-#include <oatpp/parser/json/mapping/ObjectMapper.hpp>
-#include <oatpp/web/server/api/ApiController.hpp>
+
+#if LIBLINKERFS_ENABLE_UDF
+#include "dto/request/CreateUdfWarpReqDto.hpp"
+#endif
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
@@ -58,8 +62,35 @@ public:
         return createDtoResponse(Status::CODE_200,
                                  WarpService::createWarp(createWarpReqDto->savePath, createWarpReqDto->warpConfigs));
     }
+
+#if LIBLINKERFS_ENABLE_UDF
+
+    ENDPOINT_INFO(createUdfWarp) {
+        info->summary = "Create warp file for UDF file";
+        info->addConsumes<Object<CreateUdfWarpReqDto>>("application/json");
+        info->addResponse<Object<RespWithDataExample<CreateUdfWarpReqDto>>>(Status::CODE_200, "application/json");
+        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+    }
+
+    ENDPOINT("POST", "api/warp/udf/create", createUdfWarp, BODY_DTO(Object<CreateUdfWarpReqDto>, createUdfWarpReqDto)) {
+        OATPP_ASSERT_HTTP(createUdfWarpReqDto->savePath, Status::CODE_400,
+                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(!createUdfWarpReqDto->savePath->empty(), Status::CODE_400,
+                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(createUdfWarpReqDto->udfPath, Status::CODE_400,
+                          QCoreApplication::tr("Field udfPath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(!createUdfWarpReqDto->udfPath->empty(), Status::CODE_400,
+                          QCoreApplication::tr("Field udfPath can not be empty").toStdString())
+        OATPP_ASSERT_HTTP(createUdfWarpReqDto->warpTargets, Status::CODE_400,
+                          QCoreApplication::tr("Field warpTargets can not be empty").toStdString())
+        return createDtoResponse(Status::CODE_200,
+                                 UDFService::createWarp(createUdfWarpReqDto->udfPath, createUdfWarpReqDto->savePath,
+                                                        createUdfWarpReqDto->warpTargets));
+    }
+
+#endif
 };
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif//LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP
+#endif //LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP
