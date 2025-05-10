@@ -32,6 +32,8 @@
 #include <oatpp/web/server/api/ApiController.hpp>
 #include <sstream>
 
+#include "liblinkerfs/common.h"
+
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class StaticController : public oatpp::web::server::api::ApiController {
@@ -73,6 +75,16 @@ public:
         auto resp = ResponseFactory::createResponse(Status::CODE_301, nullptr);
         resp->putHeader("Location", "/swagger/ui");
         return resp;
+    }
+
+    ENDPOINT_INFO(getFeature) {
+        info->summary = "Create warp file for UDF file";
+        info->addResponse<Object<RespWithDataExample<UInt64>>>(Status::CODE_200, "application/json");
+    }
+
+    ENDPOINT("GET", "api/feature", getFeature, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
+        const auto resp=ResponseDto::success(oatpp::UInt64(feature()));
+        return createDtoResponse(Status::CODE_200,resp);
     }
 
     ENDPOINT("GET", "/", root, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
