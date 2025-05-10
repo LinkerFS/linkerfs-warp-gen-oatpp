@@ -19,7 +19,7 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "UDFService.hpp"
+#include "UdfService.hpp"
 #include <QCoreApplication>
 #include "FileService.hpp"
 #include "common/utils/File.hpp"
@@ -29,7 +29,7 @@
 #include "dto/response/CreateWarpRespDto.hpp"
 #include "dto/response/ListUDFRespDto.hpp"
 
-std::unique_ptr<udfread, decltype(&udfread_close)> UDFService::openUdf(const char *udfPath) {
+std::unique_ptr<udfread, decltype(&udfread_close)> UdfService::openUdf(const char *udfPath) {
     const QFile udfFile(udfPath);
     OATPP_ASSERT_HTTP(udfFile.exists(), Status::CODE_404,
                       QCoreApplication::tr("File %1 not found!").arg(udfPath).toStdString())
@@ -41,7 +41,7 @@ std::unique_ptr<udfread, decltype(&udfread_close)> UDFService::openUdf(const cha
     return std::move(udf);
 }
 
-oatpp::Object<ResponseDto> UDFService::listUDF(const oatpp::String &udfPath) {
+oatpp::Object<ResponseDto> UdfService::listUDF(const oatpp::String &udfPath) {
     const QFile udfFile(udfPath->c_str());
     const auto udf = openUdf(udfPath->c_str());
     const auto root =
@@ -59,7 +59,7 @@ oatpp::Object<ResponseDto> UDFService::listUDF(const oatpp::String &udfPath) {
     return resp;
 }
 
-oatpp::Object<ResponseDto> UDFService::createWarp(const oatpp::String &udfPath, const oatpp::String &savePath,
+oatpp::Object<ResponseDto> UdfService::createWarp(const oatpp::String &udfPath, const oatpp::String &savePath,
                                                   const oatpp::Vector<oatpp::Object<UdfWarpTargetDto>> &warpTargets) {
     FileService::assertFileReadable(QFileInfo(udfPath->data()));
     const QDir saveDir(savePath->data());

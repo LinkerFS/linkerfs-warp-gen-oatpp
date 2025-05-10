@@ -42,7 +42,7 @@ if(${LIBLINKERFS_FEATURE_UDF})
     target_sources(linkerfs_warp_gen_oatpp
             PRIVATE
             common/utils/UDF.cpp
-            service/UDFService.cpp
+            service/UdfService.cpp
     )
 endif ()
 

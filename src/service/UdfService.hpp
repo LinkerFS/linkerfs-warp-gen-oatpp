@@ -30,7 +30,7 @@
 #include "dto/common/UdfWarpTargetDto.hpp"
 #include "udfread/udfread.h"
 
-class UDFService : public AbstractService {
+class UdfService : public AbstractService {
 
 public:
     static oatpp::Object<ResponseDto> listUDF(const oatpp::String &udfPath);

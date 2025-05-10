@@ -84,7 +84,7 @@ public:
         OATPP_ASSERT_HTTP(createUdfWarpReqDto->warpTargets, Status::CODE_400,
                           QCoreApplication::tr("Field warpTargets can not be empty").toStdString())
         return createDtoResponse(Status::CODE_200,
-                                 UDFService::createWarp(createUdfWarpReqDto->udfPath, createUdfWarpReqDto->savePath,
+                                 UdfService::createWarp(createUdfWarpReqDto->udfPath, createUdfWarpReqDto->savePath,
                                                         createUdfWarpReqDto->warpTargets));
     }
 
