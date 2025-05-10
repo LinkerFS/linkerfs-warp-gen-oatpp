@@ -29,12 +29,25 @@
 /**
  * This class is only used for Swagger UI to display correct Response with data example
  */
-template<class T>
+template<class T, typename = void>
 class RespWithDataExample : public oatpp::DTO {
     DTO_INIT(RespWithDataExample, DTO)
     DTO_FIELD(Int32, code);
     DTO_FIELD_INFO(code) { info->description = "Response state code"; }
     DTO_FIELD(Object<T>, data);
+    DTO_FIELD_INFO(data) { info->description = "Response data"; }
+    DTO_FIELD(String, msg);
+    DTO_FIELD_INFO(msg) { info->description = "Response message"; }
+};
+#include OATPP_CODEGEN_END(DTO)
+
+#include OATPP_CODEGEN_BEGIN(DTO)
+template<class T>
+class RespWithDataExample<T, std::enable_if_t<!std::is_base_of_v<oatpp::DTO, T>>> : public oatpp::DTO {
+    DTO_INIT(RespWithDataExample, DTO)
+    DTO_FIELD(Int32, code);
+    DTO_FIELD_INFO(code) { info->description = "Response state code"; }
+    DTO_FIELD(T, data);
     DTO_FIELD_INFO(data) { info->description = "Response data"; }
     DTO_FIELD(String, msg);
     DTO_FIELD_INFO(msg) { info->description = "Response message"; }

@@ -50,9 +50,15 @@ private:
     typedef oatpp::web::protocol::http::Status Status;
 
 public:
-    template<typename T>
+    template<typename T,std::enable_if_t<std::is_base_of_v<oatpp::DTO,T>>>
     static Object<ResponseDto> success(Object<T> &&data) {
         auto dto = wrapper(Status::CODE_200.code, std::forward<Object<T>>(data), String("Success"));
+        return dto;
+    }
+
+    template<typename T>
+    static Object<ResponseDto> success(T &&data) {
+        auto dto = wrapper(Status::CODE_200.code, std::forward<T>(data), String("Success"));
         return dto;
     }
 
