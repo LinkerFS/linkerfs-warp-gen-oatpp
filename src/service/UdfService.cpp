@@ -20,7 +20,9 @@
  */
 
 #include "UdfService.hpp"
+
 #include <QCoreApplication>
+
 #include "FileService.hpp"
 #include "common/utils/File.hpp"
 #include "common/utils/UDF.hpp"
@@ -66,8 +68,8 @@ oatpp::Object<ResponseDto> UdfService::createWarp(const oatpp::String &udfPath, 
     std::vector<WarpFileWrapper> warpFileList;
     warpFileList.reserve(warpTargets->size());
     const auto udf = openUdf(udfPath->c_str());
-    for (auto const &target: *warpTargets) {
-        const auto warpFilePath=saveDir.filePath(target->warpFileName->c_str());
+    for (auto const &target : *warpTargets) {
+        const auto warpFilePath = saveDir.filePath(target->warpFileName->c_str());
         FileService::assertFileCanBeCreated(QFileInfo(warpFilePath));
         const auto udfFile = std::unique_ptr<UDFFILE, decltype(&udfread_file_close)>(
                 udfread_file_open(udf.get(), target->filePath->c_str()), udfread_file_close);
@@ -91,8 +93,7 @@ oatpp::Object<ResponseDto> UdfService::createWarp(const oatpp::String &udfPath, 
                 .file_path_length = static_cast<decltype(udf_warp_config::file_path_length)>(udfPath->size()),
                 .target_count = 1,
         };
-        auto warpFileWrapper =
-                WarpFileWrapper(target->warpFileName, udf_generate_warp_file(&udfWarpConfig));
+        auto warpFileWrapper = WarpFileWrapper(target->warpFileName, udf_generate_warp_file(&udfWarpConfig));
         OATPP_ASSERT_HTTP(!warpFileWrapper.isEmpty(), Status::CODE_500,
                           QCoreApplication::tr("Failed to generate warp file %1")
                                   .arg(target->warpFileName->c_str())
@@ -100,7 +101,7 @@ oatpp::Object<ResponseDto> UdfService::createWarp(const oatpp::String &udfPath, 
         warpFileList.emplace_back(std::move(warpFileWrapper));
     }
     auto resp = CreateWarpRespDto::createShared();
-    for (auto const &warpFileWrapper: warpFileList) {
+    for (auto const &warpFileWrapper : warpFileList) {
         const auto saveFile = saveDir.filePath(warpFileWrapper.getWarpFileName().c_str());
         if (Utils::Warp::createWarpFile(saveFile, warpFileWrapper.getWarpFile()))
             resp->warpFiles->emplace_back(saveFile.toStdString());

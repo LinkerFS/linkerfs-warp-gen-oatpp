@@ -20,13 +20,16 @@
  */
 
 #include "FileService.hpp"
+
 #include <QCoreApplication>
+
 #include "common/utils/File.hpp"
 
 oatpp::Object<ResponseDto> FileService::listDir(const oatpp::String &dirPath) {
     oatpp::Object<ResponseDto> resp;
     QDir dir(dirPath->c_str());
-    if (dirPath == "") resp = ResponseDto::success(Utils::File::listDrivers());
+    if (dirPath == "")
+        resp = ResponseDto::success(Utils::File::listDrivers());
     else {
         OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_404,
                           QCoreApplication::tr("Dir %1 not found!").arg(dirPath->c_str()).toStdString())

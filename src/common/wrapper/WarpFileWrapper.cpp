@@ -21,11 +21,11 @@
 
 #include "WarpFileWrapper.hpp"
 
-WarpFileWrapper::WarpFileWrapper(std::string &&warpFileName, WARP_FILE &&warpFile) :
-    warpFileName(std::move(warpFileName)), warpFile(warpFile) {}
+WarpFileWrapper::WarpFileWrapper(std::string &&warpFileName, WARP_FILE &&warpFile)
+    : warpFileName(std::move(warpFileName)), warpFile(warpFile) {}
 
-WarpFileWrapper::WarpFileWrapper(WarpFileWrapper &&warpFileWrapper) noexcept :
-    warpFileName(std::move(warpFileWrapper.warpFileName)), warpFile(warpFileWrapper.warpFile) {
+WarpFileWrapper::WarpFileWrapper(WarpFileWrapper &&warpFileWrapper) noexcept
+    : warpFileName(std::move(warpFileWrapper.warpFileName)), warpFile(warpFileWrapper.warpFile) {
     warpFileWrapper.warpFile.data = nullptr;
     warpFileWrapper.warpFile.length = 0;
 }

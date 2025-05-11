@@ -24,19 +24,23 @@
 
 #include <string>
 #include <vector>
+
 #include "liblinkerfs/data/warp.h"
 
 class WarpConfigWrapper {
     typedef decltype(WARP_CONFIG::warp_count) WarpTargetSizeType;
 
 public:
-    WarpConfigWrapper(const WarpTargetSizeType &targetCount, std::string &&fileName);
+    WarpConfigWrapper(const WarpTargetSizeType &targetCount, std::string &&warpFileName);
+
     WARP_TARGET &operator[](const std::size_t &index) {
         return warpTargets.at(index);
     }
+
     [[nodiscard]] const WARP_CONFIG &getConfig() const {
         return warpConfig;
     }
+
     [[nodiscard]] const std::string &getWarpFileName() const {
         return warpFileName;
     }
@@ -47,4 +51,4 @@ private:
     std::vector<WARP_TARGET> warpTargets;
 };
 
-#endif //LINKERFS_WARP_GEN_OATPP_WARPCONFIGWRAPPER_HPP_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPCONFIGWRAPPER_HPP_HPP

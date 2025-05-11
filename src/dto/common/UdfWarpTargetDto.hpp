@@ -31,20 +31,25 @@ class UdfWarpTargetDto : public oatpp::DTO {
     DTO_INIT(UdfWarpTargetDto, DTO)
 
     DTO_FIELD(String, warpFileName);
+
     DTO_FIELD_INFO(warpFileName) {
         info->description = "name of warp file";
     }
 
     DTO_FIELD(String, filePath);
+
     DTO_FIELD_INFO(filePath) {
         info->description = "absolute path within a UDF file containing remap data";
     }
+
     DTO_FIELD(String, dataOffset);
+
     DTO_FIELD_INFO(dataOffset) {
         info->description = "the offset where the data begins in this file";
     }
 
     DTO_FIELD(String, dataSize);
+
     DTO_FIELD_INFO(dataSize) {
         info->description = "size of data to remap";
     }
@@ -52,4 +57,4 @@ class UdfWarpTargetDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_OATPP_UDFWARPTARGETDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_UDFWARPTARGETDTO_HPP

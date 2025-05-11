@@ -22,9 +22,10 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_WARPCONFIGDTO_HPP
 #define LINKERFS_WARP_GEN_OATPP_WARPCONFIGDTO_HPP
 
-#include "dto/common/WarpTargetDto.hpp"
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
+
+#include "dto/common/WarpTargetDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -32,11 +33,13 @@ class WarpConfigDto : public oatpp::DTO {
     DTO_INIT(WarpConfigDto, DTO)
 
     DTO_FIELD(String, fileName);
+
     DTO_FIELD_INFO(fileName) {
         info->description = "name of warp configuration file";
     }
 
     DTO_FIELD(Vector<Object<WarpTargetDto>>, warpTargets);
+
     DTO_FIELD_INFO(warpTargets) {
         info->description = "warp targets info";
     }
@@ -44,4 +47,4 @@ class WarpConfigDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_WARPCONFIGDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPCONFIGDTO_HPP

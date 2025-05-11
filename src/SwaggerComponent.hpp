@@ -32,8 +32,7 @@ public:
     ([] {
         oatpp::swagger::DocumentInfo::Builder builder;
 
-        builder
-                .setTitle("Swagger")
+        builder.setTitle("Swagger")
                 .setDescription("LINKERFS_WARP_GEN_OATPP project with swagger docs")
                 .setVersion("1.0")
                 .setLicenseName("GNU Affero General Public Version 3")
@@ -42,9 +41,7 @@ public:
         return builder.build();
     }());
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::Resources>, swaggerResources)
-    ([] {
-        return oatpp::swagger::Resources::loadResources(OATPP_SWAGGER_RES_PATH);
-    }());
+    ([] { return oatpp::swagger::Resources::loadResources(OATPP_SWAGGER_RES_PATH); }());
 };
 
-#endif//LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP

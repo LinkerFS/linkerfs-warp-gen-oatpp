@@ -25,6 +25,7 @@
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/macro/component.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
+
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/CreateWarpReqDto.hpp"
 #include "dto/response/CreateWarpRespDto.hpp"
@@ -38,7 +39,7 @@
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class WarpController : public oatpp::web::server::api::ApiController {
-    using oatpp::web::server::api::ApiController::ApiController;
+    using ApiController::ApiController;
 
 public:
     static std::shared_ptr<WarpController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
@@ -93,4 +94,4 @@ public:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif //LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPCONTROLLER_HPP

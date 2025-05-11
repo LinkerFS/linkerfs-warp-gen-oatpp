@@ -31,15 +31,24 @@ class FileNodeDto : public oatpp::DTO {
     DTO_INIT(FileNodeDto, DTO)
 
     DTO_FIELD(String, name);
-    DTO_FIELD_INFO(name) { info->description = "File name"; }
+
+    DTO_FIELD_INFO(name) {
+        info->description = "File name";
+    }
 
     DTO_FIELD(String, size);
-    DTO_FIELD_INFO(size) { info->description = "File size if available; null for directories or on error."; }
+
+    DTO_FIELD_INFO(size) {
+        info->description = "File size if available; null for directories or on error.";
+    }
 
     DTO_FIELD(Vector<Object<FileNodeDto>>, children);
-    DTO_FIELD_INFO(children) { info->description = "List of child nodes, or null if the node is not a directory"; }
+
+    DTO_FIELD_INFO(children) {
+        info->description = "List of child nodes, or null if the node is not a directory";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_FILENODEDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_FILENODEDTO_HPP

@@ -20,7 +20,9 @@
  */
 
 #include "ErrorHandler.hpp"
+
 #include "dto/response/ResponseDto.hpp"
+
 ErrorHandler::ErrorHandler(const std::shared_ptr<oatpp::data::mapping::ObjectMapper> &objectMapper)
     : m_objectMapper(objectMapper) {}
 
@@ -30,7 +32,7 @@ ErrorHandler::handleError(const Status &status, const oatpp::String &message, co
     auto msg = const_cast<oatpp::String &>(message);
     auto error = ResponseDto::fail(status, std::move(msg));
     auto response = ResponseFactory::createResponse(Status::CODE_200, error, m_objectMapper);
-    for (const auto &pair: headers.getAll()) {
+    for (const auto &pair : headers.getAll()) {
         response->putHeader(pair.first.toString(), pair.second.toString());
     }
 

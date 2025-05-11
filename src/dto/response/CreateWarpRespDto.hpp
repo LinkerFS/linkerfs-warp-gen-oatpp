@@ -31,16 +31,19 @@ class CreateWarpRespDto : public oatpp::DTO {
     DTO_INIT(CreateWarpRespDto, DTO)
 
     DTO_FIELD(Vector<String>, warpFiles) = {};
+
     DTO_FIELD_INFO(warpFiles) {
         info->description = "Warp files created";
     }
 
     DTO_FIELD(Vector<String>, hardlinkFiles) = {};
+
     DTO_FIELD_INFO(hardlinkFiles) {
         info->description = "Hardlink files created";
     }
 
     DTO_FIELD(Vector<String>, failedFiles) = {};
+
     DTO_FIELD_INFO(failedFiles) {
         info->description = "Files failed to create";
     }
@@ -48,4 +51,4 @@ class CreateWarpRespDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_CREATEWARPRESPDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_CREATEWARPRESPDTO_HPP

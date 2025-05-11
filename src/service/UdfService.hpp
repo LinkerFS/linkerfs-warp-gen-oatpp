@@ -36,9 +36,10 @@ public:
     static oatpp::Object<ResponseDto> listUDF(const oatpp::String &udfPath);
     static oatpp::Object<ResponseDto> createWarp(const oatpp::String &udfPath, const oatpp::String &savePath,
                                                  const oatpp::Vector<oatpp::Object<UdfWarpTargetDto>> &warpTargets);
+
 private:
     static std::unique_ptr<udfread, decltype(&udfread_close)> openUdf(const char *udfPath);
 };
 
 #endif
-#endif //LINKERFS_WARP_GEN_OATPP_UDFSERVICE_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_UDFSERVICE_HPP

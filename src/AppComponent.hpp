@@ -22,13 +22,14 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP
 #define LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP
 
-#include "ErrorHandler.hpp"
-#include "SwaggerComponent.hpp"
 #include <oatpp/core/macro/component.hpp>
 #include <oatpp/network/tcp/server/ConnectionProvider.hpp>
 #include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/HttpConnectionHandler.hpp>
 #include <oatpp/web/server/HttpRouter.hpp>
+
+#include "ErrorHandler.hpp"
+#include "SwaggerComponent.hpp"
 
 class AppComponent {
 public:
@@ -42,15 +43,12 @@ public:
     }());
 
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)
-    ([] {
-        return oatpp::web::server::HttpRouter::createShared();
-    }());
+    ([] { return oatpp::web::server::HttpRouter::createShared(); }());
 
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)
     ([] {
         OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
-        OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>,
-                        objectMapper);
+        OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
 
         auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
         connectionHandler->setErrorHandler(std::make_shared<ErrorHandler>(objectMapper));
@@ -58,4 +56,4 @@ public:
     }());
 };
 
-#endif//LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_APPCOMPONENT_HPP

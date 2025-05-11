@@ -31,12 +31,12 @@
 #include "liblinkerfs/udf/udf.h"
 #include "udfread/udfread.h"
 
-namespace Utils::UDF{
-    oatpp::Vector<oatpp::Object<FileNodeDto>> listDir(UDFDIR *udfDir,oatpp::String &dirName);
+namespace Utils::UDF {
+    oatpp::Vector<oatpp::Object<FileNodeDto>> listDir(UDFDIR *udfDir, oatpp::String &dirName);
     bool targetValidateSizeAndFill(const oatpp::Object<UdfWarpTargetDto> &target, udf_warp_target *udfWarpTarget,
-                            UDFFILE_INFO *fileInfo);
-}// namespace Utils::UDF
+                                   UDFFILE_INFO *fileInfo);
+}  //namespace Utils::UDF
 
 #endif
 
-#endif//LINKERFS_WARP_GEN_OATPP_UDF_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_UDF_HPP

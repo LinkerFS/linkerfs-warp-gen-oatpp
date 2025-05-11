@@ -23,6 +23,7 @@
 #define LINKERFS_WARP_GEN_OATPP_WARPFILEWRAPPER_HPP_HPP
 
 #include <string>
+
 #include "liblinkerfs/generator.h"
 
 class WarpFileWrapper {
@@ -50,4 +51,4 @@ private:
     WARP_FILE warpFile;
 };
 
-#endif //LINKERFS_WARP_GEN_OATPP_WARPFILEWRAPPER_HPP_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPFILEWRAPPER_HPP_HPP

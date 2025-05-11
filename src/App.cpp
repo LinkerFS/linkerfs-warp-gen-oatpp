@@ -19,17 +19,16 @@
  * along with linkerfs_warp_gen_oatpp. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "liblinkerfs/log/log_config.h"
-
-#include "AppComponent.hpp"
-#include "OptionParser.hpp"
-#include "SwaggerComponent.hpp"
-#include "controller/FileController.hpp"
-#include "controller/StaticController.hpp"
-#include "controller/WarpController.hpp"
 #include <QTranslator>
 #include <oatpp-swagger/Controller.hpp>
 #include <oatpp/network/Server.hpp>
+
+#include "AppComponent.hpp"
+#include "OptionParser.hpp"
+#include "controller/FileController.hpp"
+#include "controller/StaticController.hpp"
+#include "controller/WarpController.hpp"
+#include "liblinkerfs/log/log_config.h"
 
 void run(const oatpp::String &address, const uint16_t &port) {
 
@@ -47,9 +46,11 @@ void run(const oatpp::String &address, const uint16_t &port) {
             {address, port, oatpp::network::Address::IP_4});
 
     oatpp::network::Server server(connectionProvider, connectionHandler);
-    OATPP_LOGD("Server", "%s",QCoreApplication::tr("Running on port %1...")
-                                 .arg(connectionProvider->getProperty("port").toString()->c_str())
-                                 .toLocal8Bit().data())
+    OATPP_LOGD("Server", "%s",
+               QCoreApplication::tr("Running on port %1...")
+                       .arg(connectionProvider->getProperty("port").toString()->c_str())
+                       .toLocal8Bit()
+                       .data())
     server.run();
 }
 
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
         if (debug) {
             OATPP_LOGD("Liblinkerfs", "%s:%d %s: %s", file, line, func, msg);
         } else {
-            OATPP_LOGD("Liblinkerfs", "%s",msg);
+            OATPP_LOGD("Liblinkerfs", "%s", msg);
         }
     });
     oatpp::base::Environment::init();

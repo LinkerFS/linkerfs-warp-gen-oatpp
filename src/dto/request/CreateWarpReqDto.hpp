@@ -22,9 +22,10 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_CREATEWARPREQDTO_HPP
 #define LINKERFS_WARP_GEN_OATPP_CREATEWARPREQDTO_HPP
 
-#include "dto/common/WarpConfigDto.hpp"
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
+
+#include "dto/common/WarpConfigDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -32,11 +33,13 @@ class CreateWarpReqDto : public oatpp::DTO {
     DTO_INIT(CreateWarpReqDto, DTO)
 
     DTO_FIELD(String, savePath);
+
     DTO_FIELD_INFO(savePath) {
         info->description = "absolute path of directory to save warp configuration files";
     }
 
     DTO_FIELD(Vector<Object<WarpConfigDto>>, warpConfigs);
+
     DTO_FIELD_INFO(warpConfigs) {
         info->description = "warp configurations data";
     }
@@ -44,4 +47,4 @@ class CreateWarpReqDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_CREATEWARPREQDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_CREATEWARPREQDTO_HPP

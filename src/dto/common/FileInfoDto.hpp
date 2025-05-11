@@ -31,12 +31,18 @@ class FileInfoDto : public oatpp::DTO {
     DTO_INIT(FileInfoDto, DTO)
 
     DTO_FIELD(String, name);
-    DTO_FIELD_INFO(name) { info->description = "File name"; }
 
-    DTO_FIELD(String , size);
-    DTO_FIELD_INFO(size) { info->description = "size of file"; }
+    DTO_FIELD_INFO(name) {
+        info->description = "File name";
+    }
+
+    DTO_FIELD(String, size);
+
+    DTO_FIELD_INFO(size) {
+        info->description = "size of file";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif// LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_FILEINFODTO_HPP

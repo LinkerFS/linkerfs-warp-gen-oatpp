@@ -20,7 +20,9 @@
  */
 
 #include "WarpService.hpp"
+
 #include <QCoreApplication>
+
 #include "FileService.hpp"
 #include "common/utils/File.hpp"
 #include "common/utils/Warp.hpp"
@@ -34,7 +36,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
                       QCoreApplication::tr("%1 is not a directory").arg(savePath->data()).toStdString())
     auto transformedConfigs = std::vector<WarpConfigWrapper>();
     //validate
-    for (auto const &config: *warpConfigs) {
+    for (auto const &config : *warpConfigs) {
         char *fileName = config->fileName->data();
         FileService::assertFileCanBeCreated(QFileInfo(saveDir.filePath(fileName)));
         OATPP_ASSERT_HTTP(!config->warpTargets->empty(), Status::CODE_500,
@@ -52,7 +54,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         }
         transformedConfigs.emplace_back(std::move(wrapper));
     }
-    return createWarp(transformedConfigs,saveDir);
+    return createWarp(transformedConfigs, saveDir);
 }
 
 bool WarpService::checkWarpTargetNumWithinRange(const size_t &size) {
@@ -63,10 +65,10 @@ bool WarpService::checkWarpTargetNumWithinRange(const size_t &size) {
 oatpp::Object<ResponseDto> WarpService::createWarp(const std::vector<WarpConfigWrapper> &warpConfigs,
                                                    const QDir &saveDir) {
     auto &&resp = CreateWarpRespDto::createShared();
-    for (const auto &config: warpConfigs) {
+    for (const auto &config : warpConfigs) {
         QString warpFilePath = saveDir.filePath(config.getWarpFileName().c_str());
-        if (Utils::Warp::canUseHardLink(config.getConfig()) &&
-            FileService::tryCreateHardLink(config.getConfig().warp_targets->file_path, warpFilePath.toStdString())) {
+        if (Utils::Warp::canUseHardLink(config.getConfig())
+            && FileService::tryCreateHardLink(config.getConfig().warp_targets->file_path, warpFilePath.toStdString())) {
             resp->hardlinkFiles->emplace_back(warpFilePath.toStdString());
             continue;
         }

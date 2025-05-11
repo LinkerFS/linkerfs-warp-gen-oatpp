@@ -34,4 +34,4 @@ public:
     static QCommandLineOption debug;
     QCommandLineParser parser;
 };
-#endif//LINKERFS_WARP_GEN_OATPP_OPTIONPARSER_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_OPTIONPARSER_HPP

@@ -22,9 +22,10 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_LISTUDFRESPDTO_HPP
 #define LINKERFS_WARP_GEN_OATPP_LISTUDFRESPDTO_HPP
 
-#include "dto/common/FileNodeDto.hpp"
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
+
+#include "dto/common/FileNodeDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -32,16 +33,19 @@ class ListUDFRespDto : public oatpp::DTO {
     DTO_INIT(ListUDFRespDto, DTO)
 
     DTO_FIELD(String, udfPath);
+
     DTO_FIELD_INFO(udfPath) {
         info->description = "Absolute path of UDF file";
     }
 
     DTO_FIELD(String, volumeId);
+
     DTO_FIELD_INFO(volumeId) {
         info->description = "Volume ID of UDF File";
     }
 
     DTO_FIELD(Object<FileNodeDto>, fileTree);
+
     DTO_FIELD_INFO(fileTree) {
         info->description = "File tree of udf";
     }
@@ -49,4 +53,4 @@ class ListUDFRespDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_LISTUDFRESPDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_LISTUDFRESPDTO_HPP

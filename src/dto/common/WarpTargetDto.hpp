@@ -31,15 +31,19 @@ class WarpTargetDto : public oatpp::DTO {
     DTO_INIT(WarpTargetDto, DTO)
 
     DTO_FIELD(String, filePath);
+
     DTO_FIELD_INFO(filePath) {
         info->description = "absolute path of file which includes remap data";
     }
+
     DTO_FIELD(String, dataOffset);
+
     DTO_FIELD_INFO(dataOffset) {
         info->description = "offset of data begin in file";
     }
 
     DTO_FIELD(String, dataSize);
+
     DTO_FIELD_INFO(dataSize) {
         info->description = "size of data";
     }
@@ -47,4 +51,4 @@ class WarpTargetDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_WARPTARGETDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPTARGETDTO_HPP

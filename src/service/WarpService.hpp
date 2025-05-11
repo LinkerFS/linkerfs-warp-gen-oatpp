@@ -24,7 +24,6 @@
 
 #include <QDir>
 
-
 #include "AbstractService.hpp"
 #include "common/wrapper/WarpConfigWrapper.hpp"
 #include "dto/common/WarpConfigDto.hpp"
@@ -35,8 +34,7 @@ public:
                                                  const oatpp::Vector<oatpp::Object<WarpConfigDto>> &warpConfigs);
     static bool checkWarpTargetNumWithinRange(const size_t &size);
     static oatpp::Object<ResponseDto> createWarp(const std::vector<WarpConfigWrapper> &warpConfigs,
-                                                   const QDir &saveDir);
+                                                 const QDir &saveDir);
 };
 
-
-#endif //LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_WARPSERVICE_HPP

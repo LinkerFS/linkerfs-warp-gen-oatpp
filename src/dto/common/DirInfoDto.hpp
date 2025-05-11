@@ -31,9 +31,13 @@ class DirInfoDto : public oatpp::DTO {
     DTO_INIT(DirInfoDto, DTO)
 
     DTO_FIELD(String, name);
-    DTO_FIELD_INFO(name) { info->description = "Dir name"; }
+
+    DTO_FIELD_INFO(name) {
+        info->description = "Dir name";
+    }
 
     DTO_FIELD(Boolean, isEmpty);
+
     DTO_FIELD_INFO(isEmpty) {
         info->description = "Whether dir has any item(regular file and directory)";
     }
@@ -41,4 +45,4 @@ class DirInfoDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif// LINKERFS_WARP_GEN_OATPP_DIRINFODTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_DIRINFODTO_HPP

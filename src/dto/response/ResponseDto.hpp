@@ -32,16 +32,19 @@ class ResponseDto : public oatpp::DTO {
     DTO_INIT(ResponseDto, DTO)
 
     DTO_FIELD(Int32, code);
+
     DTO_FIELD_INFO(code) {
         info->description = "Response state code";
     }
 
     DTO_FIELD(Any, data);
+
     DTO_FIELD_INFO(data) {
         info->description = "Response data";
     }
 
     DTO_FIELD(String, msg);
+
     DTO_FIELD_INFO(msg) {
         info->description = "Response message";
     }
@@ -50,7 +53,7 @@ private:
     typedef oatpp::web::protocol::http::Status Status;
 
 public:
-    template<typename T,std::enable_if_t<std::is_base_of_v<oatpp::DTO,T>>>
+    template<typename T, std::enable_if_t<std::is_base_of_v<oatpp::DTO, T>>>
     static Object<ResponseDto> success(Object<T> &&data) {
         auto dto = wrapper(Status::CODE_200.code, std::forward<Object<T>>(data), String("Success"));
         return dto;
@@ -82,4 +85,4 @@ private:
     }
 };
 
-#endif//LINKERFS_WARP_GEN_OATPP_RESPONSEDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_RESPONSEDTO_HPP

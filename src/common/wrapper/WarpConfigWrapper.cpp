@@ -23,8 +23,8 @@
 
 #include <utility>
 
-WarpConfigWrapper::WarpConfigWrapper(const WarpTargetSizeType &targetCount, std::string &&warpFileName) :
-    warpFileName(std::move(warpFileName)) {
+WarpConfigWrapper::WarpConfigWrapper(const WarpTargetSizeType &targetCount, std::string &&warpFileName)
+    : warpFileName(std::move(warpFileName)) {
     warpTargets.resize(targetCount);
     warpConfig.warp_count = targetCount;
     warpConfig.warp_targets = warpTargets.data();

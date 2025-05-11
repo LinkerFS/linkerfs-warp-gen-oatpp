@@ -40,5 +40,5 @@ namespace Utils::Warp {
     bool canUseHardLink(const WARP_CONFIG &config);
     bool createWarpFile(const QString &filePath, const WARP_CONFIG *config);
     bool createWarpFile(const QString &filePath, const WARP_FILE &warpFile);
-}// namespace Utils::Warp
-#endif//LINKERFS_WARP_GEN_OATPP_WARP_HPP
+}  //namespace Utils::Warp
+#endif  //LINKERFS_WARP_GEN_OATPP_WARP_HPP

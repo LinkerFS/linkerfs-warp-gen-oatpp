@@ -38,7 +38,7 @@ target_include_directories(linkerfs_warp_gen_oatpp
         ${liblinkerfs_INCLUDE_DIRS}
 )
 
-if(${LIBLINKERFS_FEATURE_UDF})
+if (${LIBLINKERFS_FEATURE_UDF})
     target_sources(linkerfs_warp_gen_oatpp
             PRIVATE
             common/utils/UDF.cpp

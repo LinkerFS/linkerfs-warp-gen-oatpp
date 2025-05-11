@@ -24,6 +24,7 @@
 
 #include <oatpp/core/Types.hpp>
 #include <oatpp/core/macro/codegen.hpp>
+
 #include "dto/common/UdfWarpTargetDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
@@ -32,15 +33,24 @@ class CreateUdfWarpReqDto : public oatpp::DTO {
     DTO_INIT(CreateUdfWarpReqDto, DTO)
 
     DTO_FIELD(String, udfPath);
-    DTO_FIELD_INFO(udfPath) { info->description = "absolute path of UDF file to remap data"; }
+
+    DTO_FIELD_INFO(udfPath) {
+        info->description = "absolute path of UDF file to remap data";
+    }
 
     DTO_FIELD(String, savePath);
-    DTO_FIELD_INFO(savePath) { info->description = "absolute path of directory to save warp configuration files"; }
+
+    DTO_FIELD_INFO(savePath) {
+        info->description = "absolute path of directory to save warp configuration files";
+    }
 
     DTO_FIELD(Vector<Object<UdfWarpTargetDto>>, warpTargets);
-    DTO_FIELD_INFO(warpTargets) { info->description = "warp targets in UDF file"; }
+
+    DTO_FIELD_INFO(warpTargets) {
+        info->description = "warp targets in UDF file";
+    }
 };
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif //LINKERFS_WARP_GEN_OATPP_CREATEUDFWARPREQDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_CREATEUDFWARPREQDTO_HPP

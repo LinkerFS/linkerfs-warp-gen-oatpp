@@ -22,15 +22,15 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
 #define LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
 
+#include <QCoreApplication>
+#include <oatpp/core/macro/codegen.hpp>
+#include <oatpp/web/server/api/ApiController.hpp>
+
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/ListDirReqDto.hpp"
 #include "dto/response/ListDirRespDto.hpp"
 #include "liblinkerfs/config.h"
 #include "service/FileService.hpp"
-#include <QCoreApplication>
-#include <oatpp/core/macro/codegen.hpp>
-#include <oatpp/parser/json/mapping/ObjectMapper.hpp>
-#include <oatpp/web/server/api/ApiController.hpp>
 
 #if LIBLINKERFS_ENABLE_UDF
 #include "dto/request/ListUDFReqDto.hpp"
@@ -40,11 +40,10 @@
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class FileController : public oatpp::web::server::api::ApiController {
-    using oatpp::web::server::api::ApiController::ApiController;
+    using ApiController::ApiController;
 
 public:
-    static std::shared_ptr<FileController> createShared(
-            OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
+    static std::shared_ptr<FileController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
         return std::make_shared<FileController>(objectMapper);
     }
 
@@ -56,8 +55,7 @@ public:
         info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
     }
 
-    ENDPOINT("POST", "api/file/listDir", listDir,
-             BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
+    ENDPOINT("POST", "api/file/listDir", listDir, BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
         OATPP_ASSERT_HTTP(dirReqDto->dirPath, Status::CODE_400,
                           QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
         return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
@@ -73,8 +71,7 @@ public:
         info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
     }
 
-    ENDPOINT("POST", "api/file/listUDF", listUDF,
-             BODY_DTO(Object<ListUDFReqDto>, dirReqDto)) {
+    ENDPOINT("POST", "api/file/listUDF", listUDF, BODY_DTO(Object<ListUDFReqDto>, dirReqDto)) {
         OATPP_ASSERT_HTTP(dirReqDto->udfPath, Status::CODE_400,
                           QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
         return createDtoResponse(Status::CODE_200, UdfService::listUDF(dirReqDto->udfPath));
@@ -84,4 +81,4 @@ public:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif//LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_FILECONTROLLER_HPP

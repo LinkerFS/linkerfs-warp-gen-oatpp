@@ -20,6 +20,7 @@
  */
 
 #include "Warp.hpp"
+
 #include "File.hpp"
 #include "liblinkerfs/generator.h"
 
@@ -59,7 +60,7 @@ namespace Utils::Warp {
 
     inline bool createWarpFile(const QString &filePath, const WARP_FILE &warpFile) {
         const QByteArray data = QByteArray::fromRawData(reinterpret_cast<char *>(warpFile.data), warpFile.length);
-        return  Utils::File::writeFile(filePath, data);
+        return Utils::File::writeFile(filePath, data);
     }
 
-}// namespace Utils::Warp
+}  //namespace Utils::Warp

@@ -31,6 +31,7 @@ class ListDirReqDto : public oatpp::DTO {
     DTO_INIT(ListDirReqDto, DTO)
 
     DTO_FIELD(String, dirPath);
+
     DTO_FIELD_INFO(dirPath) {
         info->description = "Dir absolute path";
     }
@@ -38,4 +39,4 @@ class ListDirReqDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_LISTDIRREQDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_LISTDIRREQDTO_HPP

@@ -31,6 +31,7 @@ class ListUDFReqDto : public oatpp::DTO {
     DTO_INIT(ListUDFReqDto, DTO)
 
     DTO_FIELD(String, udfPath);
+
     DTO_FIELD_INFO(udfPath) {
         info->description = "Absolute path of udf file";
     }
@@ -38,4 +39,4 @@ class ListUDFReqDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-#endif//LINKERFS_WARP_GEN_OATPP_LISTUDFREQDTO_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_LISTUDFREQDTO_HPP

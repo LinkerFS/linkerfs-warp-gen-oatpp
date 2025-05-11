@@ -23,11 +23,12 @@
 #define LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP
 
 
-#include "dto/response/ResponseDto.hpp"
 #include <oatpp/web/protocol/http/Http.hpp>
+
+#include "dto/response/ResponseDto.hpp"
 
 class AbstractService {
 protected:
     typedef oatpp::web::protocol::http::Status Status;
 };
-#endif//LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_ABSTRACTSERVICE_HPP

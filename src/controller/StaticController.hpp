@@ -28,19 +28,18 @@
 #include <fstream>
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/macro/component.hpp>
-#include <oatpp/parser/json/mapping/ObjectMapper.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
-#include <sstream>
 
 #include "liblinkerfs/common.h"
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class StaticController : public oatpp::web::server::api::ApiController {
-    using oatpp::web::server::api::ApiController::ApiController;
+    using ApiController::ApiController;
 
 public:
-    static std::shared_ptr<StaticController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper)) {
+    static std::shared_ptr<StaticController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>,
+                                                                          objectMapper)) {
         return std::make_shared<StaticController>(objectMapper);
     }
 
@@ -83,8 +82,8 @@ public:
     }
 
     ENDPOINT("GET", "api/feature", getFeature, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-        const auto resp=ResponseDto::success(oatpp::UInt64(feature()));
-        return createDtoResponse(Status::CODE_200,resp);
+        const auto resp = ResponseDto::success(oatpp::UInt64(feature()));
+        return createDtoResponse(Status::CODE_200, resp);
     }
 
     ENDPOINT("GET", "/", root, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
@@ -99,4 +98,4 @@ private:
 
 #include OATPP_CODEGEN_END(ApiController)
 
-#endif//LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
+#endif  //LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP

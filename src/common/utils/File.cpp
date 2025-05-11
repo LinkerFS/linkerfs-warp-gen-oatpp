@@ -20,16 +20,17 @@
  */
 
 #include "File.hpp"
+
 #include <filesystem>
 
 namespace Utils::File {
     oatpp::Object<ListDirRespDto> listDir(QDir &&dir, QDir::Filter &&filter) {
         auto respData = ListDirRespDto::createShared();
         respData->dirPath = dir.path().toStdString();
-        auto filterFlag = QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs | QDir::Filter::Files |
-                          QDir::Filter::NoSymLinks & filter;
+        auto filterFlag = QDir::Filter::NoDotAndDotDot | QDir::Filter::Dirs | QDir::Filter::Files
+                          | QDir::Filter::NoSymLinks & filter;
         auto items = dir.entryInfoList(filterFlag);
-        for (const auto &item: items) {
+        for (const auto &item : items) {
             if (item.isFile()) {
                 auto fileInfo = FileInfoDto::createShared();
                 fileInfo->name = item.fileName().toStdString();
@@ -49,7 +50,7 @@ namespace Utils::File {
         auto respData = ListDirRespDto::createShared();
         auto drivers = QDir::drives();
         respData->dirPath = "";
-        for (const auto &driver: drivers) {
+        for (const auto &driver : drivers) {
             auto dirInfo = DirInfoDto::createShared();
             dirInfo->name = driver.path().toStdString();
             dirInfo->isEmpty = QDir(driver.path()).isEmpty();
@@ -80,11 +81,12 @@ namespace Utils::File {
 
     bool writeFile(const QString &filePath, const QByteArray &data) {
         QFile file(filePath);
-        if (!file.open(QIODevice::WriteOnly | QIODevice::NewOnly)) return false;
+        if (!file.open(QIODevice::WriteOnly | QIODevice::NewOnly))
+            return false;
         if (file.write(data) != data.size()) {
             file.remove();
             return false;
         }
         return true;
     }
-} // namespace Utils::File
+}  //namespace Utils::File

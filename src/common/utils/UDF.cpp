@@ -20,50 +20,61 @@
  */
 
 #include "UDF.hpp"
+
 #include <QCoreApplication>
 
-oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir,oatpp::String &dirName){
+oatpp::Vector<oatpp::Object<FileNodeDto>> Utils::UDF::listDir(UDFDIR *udfDir, oatpp::String &dirName) {
     udfread_dirent dirent{};
-    const size_t dirLength=dirName->size();
-    const auto dirNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
-    const auto fileNodes=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
+    const size_t dirLength = dirName->size();
+    const auto dirNodes = oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
+    const auto fileNodes = oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
     while (udfread_readdir(udfDir, &dirent)) {
-        if (!strcmp(dirent.d_name, ".") || !strcmp(dirent.d_name, "..")) continue;
-        auto fileNode=FileNodeDto::createShared();
+        if (!strcmp(dirent.d_name, ".") || !strcmp(dirent.d_name, ".."))
+            continue;
+        auto fileNode = FileNodeDto::createShared();
         fileNode->name = dirent.d_name;
         if (dirent.d_type == UDF_DT_DIR) {
-            auto child=std::unique_ptr<UDFDIR,decltype(&udfread_closedir)>(udfread_opendir_at(udfDir, dirent.d_name),udfread_closedir);
-            if(!child)
-            {
+            auto child = std::unique_ptr<UDFDIR, decltype(&udfread_closedir)>(udfread_opendir_at(udfDir, dirent.d_name),
+                                                                              udfread_closedir);
+            if (!child) {
                 dirNodes->emplace_back(std::move(fileNode));
-                OATPP_LOGD("UDF", "%s",QCoreApplication::tr("error opening directory %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit().data())
+                OATPP_LOGD("UDF", "%s",
+                           QCoreApplication::tr("error opening directory %1%2")
+                                   .arg(dirName->c_str(), dirent.d_name)
+                                   .toLocal8Bit()
+                                   .data())
                 continue;
             }
             dirName->append(dirent.d_name).append("/");
-            fileNode->children=listDir(child.get(),dirName);
+            fileNode->children = listDir(child.get(), dirName);
             dirNodes->emplace_back(std::move(fileNode));
             dirName->resize(dirLength);
         } else {
-            const auto udfFile=std::unique_ptr<UDFFILE,decltype(&udfread_file_close)>(udfread_file_openat(udfDir, dirent.d_name),udfread_file_close);
+            const auto udfFile = std::unique_ptr<UDFFILE, decltype(&udfread_file_close)>(
+                    udfread_file_openat(udfDir, dirent.d_name), udfread_file_close);
             if (!udfFile) {
-                fileNode->size="";
+                fileNode->size = "";
                 fileNodes->emplace_back(std::move(fileNode));
-                OATPP_LOGD("UDF", "%s",QCoreApplication::tr("error opening file %1%2").arg(dirName->c_str(), dirent.d_name).toLocal8Bit().data())
+                OATPP_LOGD("UDF", "%s",
+                           QCoreApplication::tr("error opening file %1%2")
+                                   .arg(dirName->c_str(), dirent.d_name)
+                                   .toLocal8Bit()
+                                   .data())
                 continue;
             }
             fileNode->size = std::to_string(udfread_file_size(udfFile.get()));
             fileNodes->emplace_back(std::move(fileNode));
         }
     }
-    auto ret=oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
-    ret->reserve(dirNodes->size()+fileNodes->size());
-    ret->insert(ret->end(),std::make_move_iterator(dirNodes->begin()),std::make_move_iterator(dirNodes->end()));
-    ret->insert(ret->end(),std::make_move_iterator(fileNodes->begin()),std::make_move_iterator(fileNodes->end()));
+    auto ret = oatpp::Vector<oatpp::Object<FileNodeDto>>::createShared();
+    ret->reserve(dirNodes->size() + fileNodes->size());
+    ret->insert(ret->end(), std::make_move_iterator(dirNodes->begin()), std::make_move_iterator(dirNodes->end()));
+    ret->insert(ret->end(), std::make_move_iterator(fileNodes->begin()), std::make_move_iterator(fileNodes->end()));
     return ret;
 }
 
-bool Utils::UDF::targetValidateSizeAndFill(const oatpp::Object<UdfWarpTargetDto> &target, udf_warp_target *udfWarpTarget,
-                                    UDFFILE_INFO *fileInfo) {
+bool Utils::UDF::targetValidateSizeAndFill(const oatpp::Object<UdfWarpTargetDto> &target,
+                                           udf_warp_target *udfWarpTarget, UDFFILE_INFO *fileInfo) {
     bool ok;
     const qint64 dataOffset = QString(target->dataOffset->data()).toLongLong(&ok);
     if (!ok || dataOffset < 0)
