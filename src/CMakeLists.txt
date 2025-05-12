@@ -14,6 +14,7 @@ file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 set(SOURCES
         App.cpp
         ErrorHandler.cpp
+        common/StaticResource.cpp
         common/utils/File.cpp
         common/utils/Warp.cpp
         common/wrapper/WarpConfigWrapper.cpp
