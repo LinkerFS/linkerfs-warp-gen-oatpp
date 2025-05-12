@@ -68,12 +68,14 @@ qt_add_resources(linkerfs_warp_gen_oatpp "i18n"
 )
 
 #webui
-file(GLOB_RECURSE WEBUI_RESOURCE_LIST "${CMAKE_BINARY_DIR}/dist/*")
-qt_add_resources(linkerfs_warp_gen_oatpp "dist"
-        PREFIX "/dist"
-        BASE "${CMAKE_BINARY_DIR}/dist"
-        FILES ${WEBUI_RESOURCE_LIST}
-)
+if (NOT ${EXTERNAL_WEBUI_PATH} STREQUAL "")
+    file(GLOB_RECURSE WEBUI_RESOURCE_LIST "${EXTERNAL_WEBUI_PATH}/*")
+    qt_add_resources(linkerfs_warp_gen_oatpp "dist"
+            PREFIX "/dist"
+            BASE ${EXTERNAL_WEBUI_PATH}
+            FILES ${WEBUI_RESOURCE_LIST}
+    )
+endif ()
 
 #swagger
 set(OATPP_SWAGGER_RES_PATH "${oatpp-swagger_INCLUDE_DIRS}/../bin/oatpp-swagger/res")
