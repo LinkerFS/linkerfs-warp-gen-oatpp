@@ -47,6 +47,7 @@ if (${LIBLINKERFS_FEATURE_UDF})
     )
 endif ()
 
+#i18n
 set(I18N_LOCALE zh-cn)
 foreach (lang ${I18N_LOCALE})
     list(APPEND TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/i18n/${lang}.ts")
@@ -64,6 +65,14 @@ qt_add_resources(linkerfs_warp_gen_oatpp "i18n"
         PREFIX "/i18n"
         BASE ${CMAKE_CURRENT_BINARY_DIR}
         FILES ${QM_FILES}
+)
+
+#webui
+file(GLOB_RECURSE WEBUI_RESOURCE_LIST "${CMAKE_BINARY_DIR}/dist/*")
+qt_add_resources(linkerfs_warp_gen_oatpp "dist"
+        PREFIX "/dist"
+        BASE "${CMAKE_BINARY_DIR}/dist"
+        FILES ${WEBUI_RESOURCE_LIST}
 )
 
 #swagger

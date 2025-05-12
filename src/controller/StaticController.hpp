@@ -22,17 +22,14 @@
 #ifndef LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
 #define LINKERFS_WARP_GEN_OATPP_STATICCONTROLLER_HPP
 
-#include <QDir>
-#include <QFile>
 #include <QMimeDatabase>
 #include <fstream>
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/core/macro/component.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 
+#include "common/StaticResource.hpp"
 #include "liblinkerfs/common.h"
-
-#include OATPP_CODEGEN_BEGIN(ApiController)
 
 class StaticController : public oatpp::web::server::api::ApiController {
     using ApiController::ApiController;
@@ -43,30 +40,16 @@ public:
         return std::make_shared<StaticController>(objectMapper);
     }
 
-    static QByteArray loadFile(const QString &filePath) {
-        QByteArray data;
-        QFile file(filePath);
-        if (file.open(QIODevice::ReadOnly)) {
-            data = file.readAll();
-            file.close();
-        }
-        return data;
-    }
+#include OATPP_CODEGEN_BEGIN(ApiController)
 
     ENDPOINT("GET", "/webui/*", webui, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
-        oatpp::String filePath = request->getPathTail();
-        QDir dir("./dist");
-        const char *fileName;
-        if (!filePath->empty() && dir.exists(filePath->data())) {
-            fileName = filePath->data();
-        } else {
-            fileName = "index.html";
+        const oatpp::String filePath = request->getPathTail();
+        const MimeResource *resource = &webuiResource.getResource(filePath->c_str());
+        if (filePath->empty() || resource->resourceData.empty()) {
+            resource = &webuiResource.getResource("index.html");
         }
-        QByteArray fileData = loadFile(dir.filePath(fileName));
-        QMimeType type = mimeDatabase.mimeTypeForFileNameAndData(fileName, fileData);
-        auto respData = oatpp::String(fileData.data(), fileData.size());
-        auto resp = ResponseFactory::createResponse(Status::CODE_200, respData);
-        resp->putHeader(Header::CONTENT_TYPE, type.name().toStdString());
+        auto resp = ResponseFactory::createResponse(Status::CODE_200, resource->resourceData);
+        resp->putHeader(Header::CONTENT_TYPE, resource->mime);
         return resp;
     }
 
@@ -93,7 +76,7 @@ public:
     }
 
 private:
-    QMimeDatabase mimeDatabase;
+    StaticResource webuiResource = StaticResource("dist");
 };
 
 #include OATPP_CODEGEN_END(ApiController)
