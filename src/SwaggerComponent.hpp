@@ -23,25 +23,22 @@
 #define LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP
 
 #include <oatpp-swagger/Model.hpp>
-#include <oatpp-swagger/Resources.hpp>
 #include <oatpp/core/macro/component.hpp>
+
+#include "controller/SwaggerController.hpp"
 
 class SwaggerComponent {
 public:
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::DocumentInfo>, swaggerDocumentInfo)
     ([] {
         oatpp::swagger::DocumentInfo::Builder builder;
-
         builder.setTitle("Swagger")
                 .setDescription("LINKERFS_WARP_GEN_OATPP project with swagger docs")
                 .setVersion("1.0")
                 .setLicenseName("GNU Affero General Public Version 3")
                 .setLicenseUrl("https://www.gnu.org/licenses/");
-
         return builder.build();
     }());
-    OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::swagger::Resources>, swaggerResources)
-    ([] { return oatpp::swagger::Resources::loadResources(OATPP_SWAGGER_RES_PATH); }());
 };
 
 #endif  //LINKERFS_WARP_GEN_OATPP_SWAGGERCOMPONENT_HPP

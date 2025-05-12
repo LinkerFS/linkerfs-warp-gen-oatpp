@@ -27,6 +27,7 @@
 #include "OptionParser.hpp"
 #include "controller/FileController.hpp"
 #include "controller/StaticController.hpp"
+#include "controller/SwaggerController.hpp"
 #include "controller/WarpController.hpp"
 #include "liblinkerfs/log/log_config.h"
 
@@ -38,7 +39,7 @@ void run(const oatpp::String &address, const uint16_t &port) {
 
     docEndpoints.append(router->addController(FileController::createShared())->getEndpoints());
     docEndpoints.append(router->addController(WarpController::createShared())->getEndpoints());
-    router->addController(oatpp::swagger::Controller::createShared(docEndpoints));
+    router->addController(SwaggerController::createShared(docEndpoints));
     router->addController(StaticController::createShared());
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
 

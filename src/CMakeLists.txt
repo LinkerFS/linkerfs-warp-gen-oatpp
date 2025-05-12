@@ -65,3 +65,12 @@ qt_add_resources(linkerfs_warp_gen_oatpp "i18n"
         BASE ${CMAKE_CURRENT_BINARY_DIR}
         FILES ${QM_FILES}
 )
+
+#swagger
+set(OATPP_SWAGGER_RES_PATH "${oatpp-swagger_INCLUDE_DIRS}/../bin/oatpp-swagger/res")
+file(GLOB_RECURSE SWAGGER_RESOURCE_LIST "${OATPP_SWAGGER_RES_PATH}/*")
+qt_add_resources(linkerfs_warp_gen_oatpp "swagger"
+        PREFIX "/swagger"
+        BASE "${OATPP_SWAGGER_RES_PATH}"
+        FILES ${SWAGGER_RESOURCE_LIST}
+)
