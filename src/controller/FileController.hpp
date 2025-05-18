@@ -26,6 +26,7 @@
 #include <oatpp/core/macro/codegen.hpp>
 #include <oatpp/web/server/api/ApiController.hpp>
 
+#include "dto/common/DocDtoMacro.hpp"
 #include "dto/common/DocExampleDtos.hpp"
 #include "dto/request/ListDirReqDto.hpp"
 #include "dto/response/ListDirRespDto.hpp"
@@ -34,8 +35,18 @@
 
 #if LIBLINKERFS_ENABLE_UDF
 #include "dto/request/ListUDFReqDto.hpp"
+#include "dto/response/ListUDFRespDto.hpp"
 #include "service/UdfService.hpp"
+
+#include OATPP_CODEGEN_BEGIN(DTO)
+GEN_SUCCESS_RESP_DTO(ListUDFRespExample, ListUDFRespDto);
+#include OATPP_CODEGEN_END(DTO)
+
 #endif
+
+#include OATPP_CODEGEN_BEGIN(DTO)
+GEN_SUCCESS_RESP_DTO(ListDirRespExample, ListDirRespDto);
+#include OATPP_CODEGEN_END(DTO)
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
@@ -49,10 +60,10 @@ public:
 
     ENDPOINT_INFO(listDir) {
         info->summary = "List dir";
-        info->addConsumes<Object<ListDirReqDto>>("application/json");
-        info->addResponse<Object<RespWithDataExample<ListDirRespDto>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_404, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+        info->addConsumes<ListDirReqDto::Wrapper>("application/json");
+        info->addResponse<ListDirRespExample::Wrapper>(Status::CODE_200, "application/json");
+        info->addResponse<ErrorResponseExapmle404::Wrapper>(Status::CODE_404, "application/json");
+        info->addResponse<ErrorResponseExapmle500::Wrapper>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/file/listDir", listDir, BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
@@ -62,13 +73,12 @@ public:
     }
 
 #if LIBLINKERFS_ENABLE_UDF
-
     ENDPOINT_INFO(listUDF) {
         info->summary = "Open UDF file and list content";
         info->addConsumes<Object<ListUDFReqDto>>("application/json");
-        info->addResponse<Object<RespWithDataExample<ListUDFReqDto>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_404, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+        info->addResponse<ListUDFRespExample::Wrapper>(Status::CODE_200, "application/json");
+        info->addResponse<ErrorResponseExapmle404::Wrapper>(Status::CODE_404, "application/json");
+        info->addResponse<ErrorResponseExapmle500::Wrapper>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/file/listUDF", listUDF, BODY_DTO(Object<ListUDFReqDto>, dirReqDto)) {

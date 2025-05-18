@@ -36,6 +36,11 @@
 #include "dto/request/CreateUdfWarpReqDto.hpp"
 #endif
 
+#include OATPP_CODEGEN_BEGIN(DTO)
+    GEN_SUCCESS_RESP_DTO(CreateWarpRespExample, CreateWarpRespDto);
+#include OATPP_CODEGEN_END(DTO)
+
+
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
 class WarpController : public oatpp::web::server::api::ApiController {
@@ -48,9 +53,10 @@ public:
 
     ENDPOINT_INFO(createWarp) {
         info->summary = "Create warp file";
-        info->addConsumes<Object<CreateWarpReqDto>>("application/json");
-        info->addResponse<Object<RespWithDataExample<CreateWarpRespDto>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+        info->addConsumes<CreateWarpReqDto::Wrapper>("application/json");
+        info->addResponse<CreateWarpRespExample::Wrapper>(Status::CODE_200, "application/json");
+        info->addResponse<ErrorResponseExapmle400::Wrapper>(Status::CODE_400, "application/json");
+        info->addResponse<ErrorResponseExapmle500::Wrapper>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/warp/create", createWarp, BODY_DTO(Object<CreateWarpReqDto>, createWarpReqDto)) {
@@ -68,9 +74,10 @@ public:
 
     ENDPOINT_INFO(createUdfWarp) {
         info->summary = "Create warp file for UDF file";
-        info->addConsumes<Object<CreateUdfWarpReqDto>>("application/json");
-        info->addResponse<Object<RespWithDataExample<CreateUdfWarpReqDto>>>(Status::CODE_200, "application/json");
-        info->addResponse<Object<RespNoDataExample>>(Status::CODE_500, "application/json");
+        info->addConsumes<CreateUdfWarpReqDto::Wrapper>("application/json");
+        info->addResponse<CreateWarpRespExample::Wrapper>(Status::CODE_200, "application/json");
+        info->addResponse<ErrorResponseExapmle400::Wrapper>(Status::CODE_400, "application/json");
+        info->addResponse<ErrorResponseExapmle500::Wrapper>(Status::CODE_500, "application/json");
     }
 
     ENDPOINT("POST", "api/warp/udf/create", createUdfWarp, BODY_DTO(Object<CreateUdfWarpReqDto>, createUdfWarpReqDto)) {
