@@ -29,7 +29,12 @@
 #include <oatpp/web/server/api/ApiController.hpp>
 
 #include "common/StaticResource.hpp"
+#include "dto/common/DocDtoMacro.hpp"
 #include "liblinkerfs/common.h"
+
+#include OATPP_CODEGEN_BEGIN(DTO)
+GEN_SUCCESS_RESP_DTO(FeatureRespDoc, UInt64)
+#include OATPP_CODEGEN_END(DTO)
 
 class StaticController : public oatpp::web::server::api::ApiController {
     using ApiController::ApiController;
@@ -42,6 +47,10 @@ public:
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
+    ENDPOINT_INFO(webui) {
+        info->hide = true;
+    }
+
     ENDPOINT("GET", "/webui/*", webui, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
         const oatpp::String filePath = request->getPathTail();
         const MimeResource *resource = &webuiResource.getResource(filePath->c_str());
@@ -53,6 +62,10 @@ public:
         return resp;
     }
 
+    ENDPOINT_INFO(swagger) {
+        info->hide = true;
+    }
+
     ENDPOINT("GET", "/doc", swagger, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
         auto resp = ResponseFactory::createResponse(Status::CODE_301, nullptr);
         resp->putHeader("Location", "/swagger/ui");
@@ -61,12 +74,16 @@ public:
 
     ENDPOINT_INFO(getFeature) {
         info->summary = "Create warp file for UDF file";
-        info->addResponse<Object<RespWithDataExample<UInt64>>>(Status::CODE_200, "application/json");
+        info->addResponse<FeatureRespDoc::Wrapper>(Status::CODE_200, "application/json");
     }
 
     ENDPOINT("GET", "api/feature", getFeature, REQUEST(std::shared_ptr<IncomingRequest>, request)) {
         const auto resp = ResponseDto::success(oatpp::UInt64(feature()));
         return createDtoResponse(Status::CODE_200, resp);
+    }
+
+    ENDPOINT_INFO(root) {
+        info->hide = true;
     }
 
     ENDPOINT("GET", "/", root, REQUEST(std::shared_ptr<IncomingRequest>, request)) {

@@ -39,8 +39,8 @@ void run(const oatpp::String &address, const uint16_t &port) {
 
     docEndpoints.append(router->addController(FileController::createShared())->getEndpoints());
     docEndpoints.append(router->addController(WarpController::createShared())->getEndpoints());
+    docEndpoints.append(router->addController(StaticController::createShared())->getEndpoints());
     router->addController(SwaggerController::createShared(docEndpoints));
-    router->addController(StaticController::createShared());
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
 
     const auto connectionProvider = oatpp::network::tcp::server::ConnectionProvider::createShared(
