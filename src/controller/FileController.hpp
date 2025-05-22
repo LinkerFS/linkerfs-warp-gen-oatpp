@@ -68,7 +68,7 @@ public:
 
     ENDPOINT("POST", "api/file/listDir", listDir, BODY_DTO(Object<ListDirReqDto>, dirReqDto)) {
         OATPP_ASSERT_HTTP(dirReqDto->dirPath, Status::CODE_400,
-                          QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
+                          QCoreApplication::tr("Field 'dirPath' cannot be null").toStdString())
         return createDtoResponse(Status::CODE_200, FileService::listDir(dirReqDto->dirPath));
     }
 
@@ -83,7 +83,7 @@ public:
 
     ENDPOINT("POST", "api/file/listUDF", listUDF, BODY_DTO(Object<ListUDFReqDto>, dirReqDto)) {
         OATPP_ASSERT_HTTP(dirReqDto->udfPath, Status::CODE_400,
-                          QCoreApplication::tr("Field dirPath can not be Empty").toStdString())
+                          QCoreApplication::tr("Field 'udfPath' cannot be null").toStdString())
         return createDtoResponse(Status::CODE_200, UdfService::listUDF(dirReqDto->udfPath));
     }
 #endif

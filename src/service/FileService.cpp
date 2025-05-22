@@ -32,7 +32,7 @@ oatpp::Object<ResponseDto> FileService::listDir(const oatpp::String &dirPath) {
         resp = ResponseDto::success(Utils::File::listDrivers());
     else {
         OATPP_ASSERT_HTTP(dir.exists(), Status::CODE_404,
-                          QCoreApplication::tr("Dir %1 not found!").arg(dirPath->c_str()).toStdString())
+                          QCoreApplication::tr("Dir %1 not found").arg(dirPath->c_str()).toStdString())
         resp = ResponseDto::success(Utils::File::listDir(std::move(dir)));
     }
     return resp;

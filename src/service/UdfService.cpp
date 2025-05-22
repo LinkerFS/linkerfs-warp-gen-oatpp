@@ -34,12 +34,12 @@
 std::unique_ptr<udfread, decltype(&udfread_close)> UdfService::openUdf(const char *udfPath) {
     const QFile udfFile(udfPath);
     OATPP_ASSERT_HTTP(udfFile.exists(), Status::CODE_404,
-                      QCoreApplication::tr("File %1 not found!").arg(udfPath).toStdString())
+                      QCoreApplication::tr("UDF file %1 not found").arg(udfPath).toStdString())
     auto udf = std::unique_ptr<udfread, decltype(&udfread_close)>(udfread_init(), udfread_close);
 
-    OATPP_ASSERT_HTTP(udf.get(), Status::CODE_500, QCoreApplication::tr("udfread failed to initialize").toStdString())
+    OATPP_ASSERT_HTTP(udf.get(), Status::CODE_500, QCoreApplication::tr("Failed to initialize necessary resources").toStdString())
     OATPP_ASSERT_HTTP(udfread_open(udf.get(), udfPath) >= 0, Status::CODE_500,
-                      QCoreApplication::tr("udfread failed to open").toStdString())
+                      QCoreApplication::tr("Failed to open UDF file: unrecognized format").toStdString())
     return std::move(udf);
 }
 
@@ -49,7 +49,7 @@ oatpp::Object<ResponseDto> UdfService::listUDF(const oatpp::String &udfPath) {
     const auto root =
             std::unique_ptr<UDFDIR, decltype(&udfread_closedir)>(udfread_opendir(udf.get(), "/"), udfread_closedir);
     OATPP_ASSERT_HTTP(root, Status::CODE_500,
-                      QCoreApplication::tr("udfread failed to open root directory").toStdString())
+                      QCoreApplication::tr("Could not open the root directory of the UDF file").toStdString())
     auto data = ListUDFRespDto::createShared();
     auto &&rootNode = FileNodeDto::createShared();
     data->udfPath = udfPath;
@@ -75,16 +75,16 @@ oatpp::Object<ResponseDto> UdfService::createWarp(const oatpp::String &udfPath, 
                 udfread_file_open(udf.get(), target->filePath->c_str()), udfread_file_close);
         OATPP_ASSERT_HTTP(
                 udfFile, Status::CODE_500,
-                QCoreApplication::tr("udfread failed to open file %1").arg(target->filePath->c_str()).toStdString())
+                QCoreApplication::tr("Could not open file %1").arg(target->filePath->c_str()).toStdString())
         const auto fileInfo =
                 std::unique_ptr<UDFFILE_INFO, decltype(&free)>(udfread_get_file_info(udfFile.get()), free);
         OATPP_ASSERT_HTTP(
                 fileInfo, Status::CODE_500,
-                QCoreApplication::tr("udfread failed to get file info %1").arg(target->filePath->c_str()).toStdString())
+                QCoreApplication::tr("Failed to get file info for %1").arg(target->filePath->c_str()).toStdString())
         udf_warp_target udfWarpTarget = {};
         OATPP_ASSERT_HTTP(Utils::UDF::targetValidateSizeAndFill(target, &udfWarpTarget, fileInfo.get()),
                           Status::CODE_500,
-                          QCoreApplication::tr("File %1 in %2 is invalid")
+                          QCoreApplication::tr("Invalid parameter for target %1 in %2")
                                   .arg(target->filePath->c_str(), udfPath->c_str())
                                   .toStdString());
         udf_warp_config udfWarpConfig = {

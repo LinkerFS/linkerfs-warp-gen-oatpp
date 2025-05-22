@@ -61,11 +61,11 @@ public:
 
     ENDPOINT("POST", "api/warp/create", createWarp, BODY_DTO(Object<CreateWarpReqDto>, createWarpReqDto)) {
         OATPP_ASSERT_HTTP(createWarpReqDto->savePath, Status::CODE_400,
-                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'savePath' cannot be null").toStdString())
         OATPP_ASSERT_HTTP(!createWarpReqDto->savePath->empty(), Status::CODE_400,
-                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'savePath' cannot be empty").toStdString())
         OATPP_ASSERT_HTTP(createWarpReqDto->warpConfigs, Status::CODE_400,
-                          QCoreApplication::tr("Field warpConfig can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'warpConfig' cannot be null").toStdString())
         return createDtoResponse(Status::CODE_200,
                                  WarpService::createWarp(createWarpReqDto->savePath, createWarpReqDto->warpConfigs));
     }
@@ -82,15 +82,15 @@ public:
 
     ENDPOINT("POST", "api/warp/udf/create", createUdfWarp, BODY_DTO(Object<CreateUdfWarpReqDto>, createUdfWarpReqDto)) {
         OATPP_ASSERT_HTTP(createUdfWarpReqDto->savePath, Status::CODE_400,
-                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'savePath' cannot be null").toStdString())
         OATPP_ASSERT_HTTP(!createUdfWarpReqDto->savePath->empty(), Status::CODE_400,
-                          QCoreApplication::tr("Field savePath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'savePath' cannot be empty").toStdString())
         OATPP_ASSERT_HTTP(createUdfWarpReqDto->udfPath, Status::CODE_400,
-                          QCoreApplication::tr("Field udfPath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'udfPath' cannot be null").toStdString())
         OATPP_ASSERT_HTTP(!createUdfWarpReqDto->udfPath->empty(), Status::CODE_400,
-                          QCoreApplication::tr("Field udfPath can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'udfPath' cannot be empty").toStdString())
         OATPP_ASSERT_HTTP(createUdfWarpReqDto->warpTargets, Status::CODE_400,
-                          QCoreApplication::tr("Field warpTargets can not be empty").toStdString())
+                          QCoreApplication::tr("Field 'warpTargets' cannot be null").toStdString())
         return createDtoResponse(Status::CODE_200,
                                  UdfService::createWarp(createUdfWarpReqDto->udfPath, createUdfWarpReqDto->savePath,
                                                         createUdfWarpReqDto->warpTargets));

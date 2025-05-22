@@ -48,7 +48,7 @@ oatpp::Object<ResponseDto> WarpService::createWarp(const oatpp::String &savePath
         for (uint32_t i = 0; i < config->warpTargets->size(); ++i) {
             const auto &target = config->warpTargets[i];
             OATPP_ASSERT_HTTP(Utils::Warp::targetValidateSizeAndFill(target, &wrapper[i]), Status::CODE_500,
-                              QCoreApplication::tr("Target %1 in config %2 is invalid")
+                              QCoreApplication::tr("Parameter for target %1 in config %2 is invalid")
                                       .arg(QString::number(i + 1), fileName)
                                       .toStdString())
         }
